@@ -1,3 +1,15 @@
-<form name="search" action="search_perform_action" method="get">
-	<input type="text" style="margin: 0 auto;" data-provide="typeahead" paginate=20 data-items="4" data-source='<%=@search%>'>
-<input type="submit">
+<%= form_tag({:action => 'create_doctor'}) do %>
+	<table>
+		<tr>
+		<td><%= label_tag(:Attribute) %></td>
+		<td><%= select_tag(:name, options_for_select([['Name', 'Name'],
+														['qualification', 'qualification'],
+														['education', 'education'],
+														['specialised_fields', 'specialised_fields'],
+														['salary', 'salary']])) %></td>>
+		
+		<th><%= label_tag(:query) %></th>
+		<th><%= text_field_tag(:query)%></th>
+	</table>
+	<%= submit_tag("Create Doctor")%>
+<% end %>

@@ -123,6 +123,9 @@ class UsersController < ApplicationController
       @search.insert(cnt, doctor.name)
       cnt+=1
     end
+    @doit1=['name','qualification','specialised_fields','salary']
+    @doit2=['name','qualification','specialised_fields','salary']
+    
   end
   def search_perform_function
     @check=params
