@@ -1,0 +1,11 @@
+<%= link_to("<<Back to lists", {:action => 'list_assistant'}, :class => "back-link") %>
+<div class=Doctor>
+	<h2>Delete Assistant</h2>
+	<%= form_for(:assistant, :url => {:action => 'destroy_assistant', :id => @users.id}) do |f| %>
+		<p>Are you sure you want to delete this doctor</p>
+		<p class="reference-name"><%= @users.username %></p>
+		<div>
+			<%= submit_tag("Delete Assistant") %>
+		</div>
+	<% end %>
+</div>

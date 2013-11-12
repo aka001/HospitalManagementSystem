@@ -1,0 +1,34 @@
+<% if !(@app.empty?) %>
+<table>
+	<tr>
+		<th>patient_id</th>
+		<th>Date Requested</th>
+		<th>Status</th>
+		<th>Action</th>
+	</tr>
+	<% @app.each do |app| %>
+	<tr>
+		<% patid=app.patient_id %>
+		<% patient=Patient.find(patid) %>
+		<% user=patient.users.first.inspect %>
+		<td><%= app['patient_id']%></td>
+		<td><%= app['dateit']%></td>
+		<td><%= app['status']%></td>
+		<% if app['status']=='pending'%>
+			<td><%= link_to("Confirm", {:action => 'action_appointment_doctor', :id1 => "confirm", :id2 => @doc_id, :id3 => app['patient_id']}, :class => "back-link") %></td>
+			<td><%= link_to("Cancel", {:action => 'action_appointment_doctor', id1: "cancel", id2: @doc_id, id3: app['patient_id']}, :class => "back-link") %></td>
+		<% elsif app['status']=='confirm' %>
+			<%= app['id'] %>
+			<% testit=Prescription.where(:appointment_id => app['id'])%>
+			<% if testit.empty?%>
+				<td><%= link_to("Prescription", {:action => 'prescription_doctor', :id => app['id']}, :class => "back-link") %></td>
+			<% else %>
+				<td><%= link_to("Show Prescription", {:action => 'show_prescription', :id => app['id']}, :class => 'back-link')%>
+			<% end %>
+		<% end %>
+	</tr>
+	<% end %>
+</table>
+<% else %>
+	<h2>No records Found</h2>
+<% end %>

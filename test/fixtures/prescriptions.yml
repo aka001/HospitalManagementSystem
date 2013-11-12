@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  appointment_id: 1
+  diagnostictest: MyString
+  drugs: MyString
+  diagnostictest_result: MyString
+  remark: MyString
+
+two:
+  appointment_id: 1
+  diagnostictest: MyString
+  drugs: MyString
+  diagnostictest_result: MyString
+  remark: MyString

@@ -1,0 +1,10 @@
+<%= link_to("<<Back to lists", {:action => 'list_patient'}, :class => "back-link") %>
+<div id="name">
+  <h2>Create Patient</h2>
+  <%= form_for(:patient, :url => {:action => 'update_patient', :id => @users.id}) do |f| %>
+	<%= render(:partial => 'patient', :locals => {:f => f}) %>
+	<div class="form-buttons">
+  		<%= submit_tag("Create Patient")%>
+  	</div>
+  <% end %>
+</div>

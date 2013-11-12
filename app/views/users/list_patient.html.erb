@@ -1,0 +1,38 @@
+<%= link_to("<<Back to lists", {:action => 'list_patient'}, :class => "back-link") %>
+<br/>
+<%= link_to("Create Patient", {:action => 'new_patient'}, :class => "back-link") %>
+<div>
+	<% if !(@patients.empty?) %>
+		<table>
+			<thead>
+				<th>Username</th>
+				<th>Name</th>
+				<th>Gender</th>
+				<th>Age</th>
+				<th>Address</th>
+				<th>Contact Number</th>
+				<th>User Id</th>
+				<th>Action</th>
+			</thead>
+			
+				<% @patients.each do |patient| %>
+				<tr>
+					<% user = patient.users.first %>
+					<td><%= user.username %></td>
+					<td><%= patient.name %></td>
+					<td><%= patient.gender %></td>
+					<td><%= patient.age %></td>
+					<td><%= patient.address %></td>
+					<td><%= patient.contact_number %></td>
+					<td><%= user.id %></td>
+					<td><%= link_to("Show", {:action => 'show_patient', :id => user.id}, :class => "back-link") %></td>
+					<td><%= link_to("Edit", {:action => 'edit_patient', :id => user.id}, :class => "back-link") %></td>
+					<td><%= link_to("Delete", {:action => 'delete_patient', :id => user.id }, :class => "back-link") %></td>
+						
+				</tr>>
+				<% end %>
+		</table>
+	<% else %>
+		<h2>No records yet</h2>
+	<% end %>
+</div>

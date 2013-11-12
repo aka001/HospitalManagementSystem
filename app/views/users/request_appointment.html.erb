@@ -1,0 +1,17 @@
+<div id="name">
+  <h2>Request Appointment</h2>
+  <p>Doctor Name: <%= @doctors.name %> </p>
+  <p>Patient Name: <%= @patients.name%></p>
+  <%= form_for(:appointment, :url => {:action => 'confirm_appointment', :id1 => @doc_id, :id2 => @pat_id}) do |f| %>
+  
+		<table>
+			<tr>
+				<th>Date</th>
+				<td><%= f.datetime_select(:dateit,:order=>[:day,:month,:year],:date_separator=>"-")%></td>
+			</tr>
+		</table>
+	<div class="form-buttons">
+		<%= submit_tag("Submit Request")%>
+	</div>
+  <% end %>
+</div>

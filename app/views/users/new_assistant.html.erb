@@ -1,0 +1,10 @@
+<%= link_to("<<Back to lists", {:action => 'list_assistant'}, :class => "back-link") %>
+<div id="name">
+  <h2>Create Assistant</h2>
+  <%= form_for(:assistant, :url => {:action => 'create_assistant'}) do |f| %>
+  	<%= render(:partial => 'assistant', :locals => {:f => f}) %>
+  	<div class="form-buttons">
+  		<%= submit_tag("Create Assistant")%>
+  	</div>
+  <% end %>
+</div>

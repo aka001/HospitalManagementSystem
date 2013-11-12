@@ -1,0 +1,37 @@
+<%= link_to("<<Back to lists", {:action => 'list_assistant'}, :class => "back-link") %>
+<br/>
+<%= link_to("Create Assistant", {:action => 'new_assistant'}, :class => "back-link") %>
+<div>
+	<% if !(@assistants.empty?) %>
+		<table>
+			<thead>
+				<th>Username</th>
+				<th>Name</th>
+				<th>Gender</th>
+				<th>Date_of_birth</th>
+				<th>Permanent Address</th>
+				<th>Email</th>
+				<th>Education</th>
+			</thead>
+			
+				<% @assistants.each do |assistant| %>
+				<tr>
+					<% user=assistant.users.first %>
+					<td><%= user.username%></td>
+					<td><%= assistant.name %></td>
+					<td><%= assistant.gender %></td>
+					<td><%= assistant.date_of_birth %></td>
+					<td><%= assistant.permanent_address %></td>
+					<td><%= assistant.email %></td>
+					<td><%= assistant.education%></td>
+					<td><%= user.id %></td>
+					<td><%= link_to("Show", {:action => 'show_assistant', :id => user.id}, :class => "back-link") %></td>
+					<td><%= link_to("Edit", {:action => 'edit_assistant', :id => user.id}, :class => "back-link") %></td>
+					<td><%= link_to("Delete", {:action => 'delete_assistant', :id => user.id }, :class => "back-link") %></td>
+				</tr>>
+				<% end %>
+		</table>
+	<% else %>
+		<h2>No records yet</h2>
+	<% end %>
+</div>
