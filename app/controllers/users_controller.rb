@@ -1,3 +1,4 @@
+require 'json'
 class UsersController < ApplicationController
   #before_action :set_user, only: [:show, :edit, :update, :destroy]
   before_filter :confirm_logged_in
@@ -56,18 +57,21 @@ class UsersController < ApplicationController
   end
   def confirm_appointment
     attribute=params.require(:appointment).permit(:dateit)
+    print "hie"
+    puts attribute.inspect
     app=Appointment.new
     idd1=params[:id1]
     idd2=params[:id2]
     app.doctor_id=params[:id1]
     app.patient_id=params[:id2]
-    app.dateit=attribute['dateit']
+    app.dateit=attribute[:dateit]
+    @x=app.dateit
     app.status='pending'
-    if app.save
-      redirect_to(:action => 'appointment')
-    else
-      redirect_to request_appointment(:id1 => idd1, :id2 => idd2)
-    end
+#    if app.save
+#	  redirect_to(:action => 'appointment')
+#   else
+#   	redirect_to request_appointment(:id1 => idd1, :id2 => idd2)
+#   end
   end
   def show_appointment
     use=session[:user_id]
@@ -101,8 +105,8 @@ class UsersController < ApplicationController
   end
   def prescription_form_doctor
     app_id=params[:id]
-    attribute=params.require(:prescription).permit(:diagnostictest,:problem,:prognosis, :drugs, :diagnostictest_result, :remarks)
-    prescription = Prescription.new(:appointment_id => app_id, :problem=>attribute['problem'],:prognosis=>attribute['prognosis'],:diagnostictest => attribute['diagnostictest'], :drugs => attribute['drugs'], :diagnostictest_result => attribute['diagnostictest_result'], :remarks => attribute['remark'])
+    attribute=params.require(:prescription).permit(:diagnostictest, :drugs, :diagnostictest_result, :remark)
+    prescription = Prescription.new(:appointment_id => app_id, :diagnostictest => attribute['diagnostictest'], :drugs => attribute['drugs'], :diagnostictest_result => attribute['diagnostictest_result'], :remark => attribute['remark'])
     if prescription.save
       redirect_to(:action => 'show_appointment')
     else
@@ -114,18 +118,33 @@ class UsersController < ApplicationController
     @prescription=Prescription.where(:appointment_id => appid)
     @prescription=@prescription.first
   end
-  
+  @result=['hie']
   def search_doctor
     cnt=0
+    @user=User.find(session[:user_id])
+    @patient=@user.patients.first
     @search=[]
     @doctor=Doctor.all
     @doctor.each do |doctor|
       @search.insert(cnt, doctor.name)
       cnt+=1
     end
+    @doctors=params[:id]
+    # p @doctors
+    if (@doctors != nil)
+      @doctors=JSON.parse(@doctors) 
+    end
+    @doit1=['name','qualification','specialised_fields','salary']
+    @doit2=['name','qualification','specialised_fields','salary']
   end
+  #@result=Doctor.search(@searchit,@check)
   def search_perform_function
-    @check=params
+    @check=params[:name]
+    @searchit=params[:query]
+    @result=Doctor.search(@searchit, @check)
+    @result= @result.to_json;
+    #redirect_to(:action => 'search_doctor', :result => result)
+    redirect_to(:action => 'search_doctor', :id => @result)
   end
   
   def new_doctor 
@@ -146,6 +165,7 @@ class UsersController < ApplicationController
     if user.save && doctor.save
       user.doctors << doctor
       puts user.doctors
+      user.roles << Role.where(:name => 'doctor').first
       #user.doctors=doctor
       redirect_to(:action => 'list_doctor')
     else
@@ -199,6 +219,7 @@ class UsersController < ApplicationController
     if user.save && assistant.save
       user.assistants << assistant
       puts user.assistants
+      user.roles << Role.where(:name => 'assistant').first
       #user.doctors=doctor
       redirect_to(:action => 'list_assistant')
     else
@@ -248,6 +269,7 @@ class UsersController < ApplicationController
                     :contact_number => attribute['contact_number'])
     if user.save && patient.save
       user.patients << patient
+       user.roles << Role.where(:name => 'patient').first
       #user.doctors=doctor
       redirect_to(:action => 'list_patient')
     else
