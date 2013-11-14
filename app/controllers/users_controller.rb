@@ -64,14 +64,13 @@ class UsersController < ApplicationController
     idd2=params[:id2]
     app.doctor_id=params[:id1]
     app.patient_id=params[:id2]
-    app.dateit=attribute[:dateit]
-    @x=app.dateit
+    app.dateit = DateTime.new(attribute["dateit(1i)"].to_i,attribute["dateit(2i)"].to_i,attribute["dateit(3i)"].to_i,attribute["dateit(4i)"].to_i,attribute["dateit(5i)"].to_i)    
     app.status='pending'
-#    if app.save
-#	  redirect_to(:action => 'appointment')
-#   else
-#   	redirect_to request_appointment(:id1 => idd1, :id2 => idd2)
-#   end
+    if app.save
+	  redirect_to(:action => 'appointment')
+   else
+   	redirect_to request_appointment(:id1 => idd1, :id2 => idd2)
+   end
   end
   def show_appointment
     use=session[:user_id]
