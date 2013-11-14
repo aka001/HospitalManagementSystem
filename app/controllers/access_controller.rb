@@ -7,25 +7,34 @@ class AccessController < ApplicationController
   def menu
    idd=session[:user_id]
    @user=User.where(id: idd).first
-   @role=@user.roles
-   @flag1=@flag2=@flag3=@flag4=@flag5=0
-   @role.each do |role|
-      if !(role.permissions.where(:name => 'create_doctor').empty?)
-        @flag1=1
-      end
-      if !(role.permissions.where(:name => 'create_assistant').empty?)
-        @flag2=1
-      end
-      if !(role.permissions.where(:name => 'create_patient').empty?)
-        @flag3=1
-      end
-      if !(role.permissions.where(:name => 'show_appointment').empty?)
-        @flag4=1
-      end
-      if !(role.permissions.where(:name => 'confirm_appointment').empty?)
-        @flag5=1
-      end
+   @role=@user.roles.first
+   @flag1=@flag2=@flag3=0
+   if @role.name == 'doctor'
+     @flag1=1
+   elsif @role.name == 'patient'
+     @flag2=1
+   elsif @role.name == 'assistant'
+     @flag3=1
+   elsif @role.name == 'admin'
+     @flag4=1
    end
+   # @role.each do |role|
+      # if !(role.permissions.where(:name => 'create_doctor').empty?)
+        # @flag1=1
+      # end
+      # if !(role.permissions.where(:name => 'create_assistant').empty?)
+        # @flag2=1
+      # end
+      # if !(role.permissions.where(:name => 'create_patient').empty?)
+        # @flag3=1
+      # end
+      # if !(role.permissions.where(:name => 'show_appointment').empty?)
+        # @flag4=1
+      # end
+      # if !(role.permissions.where(:name => 'confirm_appointment').empty?)
+        # @flag5=1
+      # end
+   # end
    #@role=@user.roles
    #@perm=@role.permissions
   end

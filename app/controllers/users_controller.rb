@@ -1,3 +1,4 @@
+require 'json'
 class UsersController < ApplicationController
   #before_action :set_user, only: [:show, :edit, :update, :destroy]
   before_filter :confirm_logged_in
@@ -114,23 +115,34 @@ class UsersController < ApplicationController
     @prescription=Prescription.where(:appointment_id => appid)
     @prescription=@prescription.first
   end
-  
+  @result=['hie']
   def search_doctor
     cnt=0
+    @user=User.find(session[:user_id])
+    @patient=@user.patients.first
     @search=[]
     @doctor=Doctor.all
     @doctor.each do |doctor|
       @search.insert(cnt, doctor.name)
       cnt+=1
     end
+    @doctors=params[:id]
+    # p @doctors
+    if (@doctors != nil)
+      @doctors=JSON.parse(@doctors) 
+    end
     @doit1=['name','qualification','specialised_fields','salary']
     @doit2=['name','qualification','specialised_fields','salary']
-    
   end
+  #@result=Doctor.search(@searchit,@check)
   def search_perform_function
-    @check=params
+    @check=params[:name]
+    @searchit=params[:query]
+    @result=Doctor.search(@searchit, @check)
+    @result= @result.to_json;
+    #redirect_to(:action => 'search_doctor', :result => result)
+    redirect_to(:action => 'search_doctor', :id => @result)
   end
-  
   
   def new_doctor 
   end

@@ -23,7 +23,7 @@ Project::Application.routes.draw do
   get "users/edit_assistant"
   post "users/update_assistant"
   get "users/search_doctor"
-  get "users/search_perform_action"
+  post "users/search_perform_function"
     
   get "users/list_patient"
   #post "users/list_patient"

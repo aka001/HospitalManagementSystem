@@ -2,27 +2,15 @@
 <%@page_slug="admin"%>
 <br/>
 <div>
-	<h2>Admin Menu</h2>
 	<ul>
-		<% if @flag1==1 %>
-			<li><%= link_to("Create Doctors", :controller => 'users', :action => 'new_doctor')%></li>
+		<% if @flag1 == 1 %>
+			<%= render(:partial =>'/users/doctor_role') %>
+		<% elsif @flag2 == 1 %>
+			<%= render(:partial =>'/users/patient_role') %>
+		<% elsif @flag3 == 1 %>
+			<%= render(:partial => '/users/assistant_role') %>
+		<% elsif @flag4 == 1 %>
+			<%= render(:partial => '/users/admin_role') %>
 		<% end %>
-		
-		<% if @flag2==1 %>
-				<li><%= link_to("Create Assistants", :controller => 'users', :action => 'new_assistant')%></li>
-		<% end %>
-		
-		<% if @flag3==1 %>
-			<li><%= link_to("Create patients", :controller => 'users', :action => 'new_patient')%></li>
-		<% end %>
-		
-		<% if @flag4==1 %>
-			<li><%= link_to("Show Appointments", :controller => 'users', :action => 'appointment')%></li>
-		<% end %>
-		
-		<% if @flag5==1 %>
-			<li><%= link_to("Confirm Appointments", :controller => 'users', :action => 'show_appointment')%></li>
-		<% end %>
-		
 	</ul>
 </div>
