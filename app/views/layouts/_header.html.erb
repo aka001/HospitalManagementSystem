@@ -15,10 +15,12 @@
 <link href="/assets/pygments-manni.css" rel="stylesheet">
 <!--custom styles-->
 <%if @page_slug=='login'%> 
-<link href="/assets/stylesheets/signin.css" rel="stylesheet">
-<link href="/assets/stylesheets/navbar-fixed-top.css" rel="stylesheet">
-
 <%end%>
+<%= csrf_meta_tags %>
+<%= javascript_include_tag "jquery", "data-turbolinks-track" => true %>
+<%#= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
+<%= stylesheet_link_tag    "", media: "all", "data-turbolinks-track" => true %>
+
 <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!--[if lt IE 9]>
   <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>

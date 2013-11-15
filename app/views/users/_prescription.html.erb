@@ -4,15 +4,24 @@
 		<td><%= f.text_field(:diagnostictest) %></td>
 	</tr>
 	<tr>
+		<th>Problem</th>
+		<td><%= f.text_area(:problem) %></td>
+	</tr>
+	<tr>
+		<th>Prognosis</th>
+		<td><%= f.text_area(:prognosis) %></td>
+	</tr>
+	<tr>
 		<th>Drugs</th>
 		<td><%= f.text_field(:drugs) %></td>
 	</tr>
+
 	<tr>
 		<th>Diagnostic Result</th>
 		<td><%= f.text_field(:diagnostictest_result) %></td>
 	</tr>
 	<tr>
 		<th>Remark</th>
-		<td><%= f.text_field(:remark) %></td>
+		<td><%= f.text_area(:remark) %></td>
 	</tr>
 </table>

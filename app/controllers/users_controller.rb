@@ -57,18 +57,20 @@ class UsersController < ApplicationController
   end
   def confirm_appointment
     attribute=params.require(:appointment).permit(:dateit)
+    print "hie"
+    puts attribute.inspect
     app=Appointment.new
     idd1=params[:id1]
     idd2=params[:id2]
     app.doctor_id=params[:id1]
     app.patient_id=params[:id2]
-    app.dateit=attribute['dateit']
+    app.dateit = DateTime.new(attribute["dateit(1i)"].to_i,attribute["dateit(2i)"].to_i,attribute["dateit(3i)"].to_i,attribute["dateit(4i)"].to_i,attribute["dateit(5i)"].to_i)    
     app.status='pending'
     if app.save
-      redirect_to(:action => 'appointment')
-    else
-      redirect_to request_appointment(:id1 => idd1, :id2 => idd2)
-    end
+	  redirect_to(:action => 'appointment')
+   else
+   	redirect_to request_appointment(:id1 => idd1, :id2 => idd2)
+   end
   end
   def show_appointment
     use=session[:user_id]
@@ -162,6 +164,7 @@ class UsersController < ApplicationController
     if user.save && doctor.save
       user.doctors << doctor
       puts user.doctors
+      user.roles << Role.where(:name => 'doctor').first
       #user.doctors=doctor
       redirect_to(:action => 'list_doctor')
     else
@@ -215,6 +218,7 @@ class UsersController < ApplicationController
     if user.save && assistant.save
       user.assistants << assistant
       puts user.assistants
+      user.roles << Role.where(:name => 'assistant').first
       #user.doctors=doctor
       redirect_to(:action => 'list_assistant')
     else
@@ -264,6 +268,7 @@ class UsersController < ApplicationController
                     :contact_number => attribute['contact_number'])
     if user.save && patient.save
       user.patients << patient
+       user.roles << Role.where(:name => 'patient').first
       #user.doctors=doctor
       redirect_to(:action => 'list_patient')
     else
