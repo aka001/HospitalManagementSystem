@@ -1,18 +1,5 @@
-<%= form_tag({:action => 'search_perform_function'}) do %>
-	<table>
-		<tr>
-		<td><%= label_tag(:Attribute) %></td>
-		<td><%= select_tag(:name, options_for_select([['name', 'name'],
-														['qualification', 'qualification'],
-														['education', 'education'],
-														['specialised_fields', 'specialised_fields'],
-														['salary', 'salary']])) %></td>>
-		<th><%= label_tag(:query) %></th>
-		<th><%= text_field_tag(:query)%></th>
-	</table>
-	<%= submit_tag("Find Doctor")%>
-<% end %>
-<% if @doctors != nil %>
+<%= link_to("Add Favourite doctors", {:action => 'advanced_search_doctor'}, :class => "nav nav-pills") %>
+<% if !@fav.empty? %>
 		<table>
 			<thead>
 				<th>Username</th>
@@ -24,9 +11,9 @@
 				<th>Status</th>
 			</thead>
 			
-				<% @doctors.each do |doc| %>
+				<% @fav.each do |fav| %>
 				<tr>
-					<% doctor=Doctor.find(doc['id']) %>
+					<% doctor=Doctor.find(fav.doctor_id) %>
 					<% user= doctor.users %>
 					<% if !(user.empty?) %>
 						<% user=user.first %>
@@ -48,4 +35,3 @@
 				<% end %>
 		</table>
 <% end %>
-

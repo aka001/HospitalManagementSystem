@@ -1,15 +1,4 @@
-  <script type="text/javascript">
-    var config = {
-      '.chosen-select'           : {},
-      '.chosen-select-deselect'  : {allow_single_deselect:true},
-      '.chosen-select-no-single' : {disable_search_threshold:10},
-      '.chosen-select-no-results': {no_results_text:'Oops, nothing found!'},
-      '.chosen-select-width'     : {width:"95%"}
-    }
-    for (var selector in config) {
-      $(selector).chosen(config[selector]);
-    }
-  </script>
+
 <form action="advanced_search_perform_function" method="get">
 	<em>Name: </em><input type="text" name="name"><br>
 	<div class="side-by-side clearfix">
@@ -60,9 +49,9 @@
 					<td><%= doctor.id %></td>
 					<% out = Favourite.where(:doctor_id => doctor.id, :patient_id => @patient.id) %>
 					<% if out.empty? %>
-						<td><%= link_to("Add to Favourites", {:action => 'favourite_action', :id => 1, :id1 => doctor.id, :id2 => @patient.id}, :class => "back-link") %></td>
+						<td><%= link_to("Add to Favourites", {:action => 'favourite_action', :id => 1, :id1 => doctor.id, :redirect => 1}, :class => "back-link") %></td>
 					<% else %>
-						<td><%= link_to("Remove from Favourites", {:action => 'favourite_action', :id => 2, :id1 => doctor.id, :id2 => @patient.id}, :class => "back-link") %></td>
+						<td><%= link_to("Remove from Favourites", {:action => 'favourite_action', :id => 2, :id1 => doctor.id, :redirect => 1}, :class => "back-link") %></td>
 					<% end %>
 				</tr>
 				<% end %>

@@ -67,7 +67,7 @@ class UsersController < ApplicationController
     app.dateit = DateTime.new(attribute["dateit(1i)"].to_i,attribute["dateit(2i)"].to_i,attribute["dateit(3i)"].to_i,attribute["dateit(4i)"].to_i,attribute["dateit(5i)"].to_i)    
     app.status='pending'
     if app.save
-	  redirect_to(:action => 'appointment')
+	  redirect_to(:action => 'appointment_patient_favourite')
    else
    	redirect_to request_appointment(:id1 => idd1, :id2 => idd2)
    end
@@ -135,7 +135,7 @@ class UsersController < ApplicationController
   def favourite_action
     x=params[:id]
     doc=params[:id1]
-    pat=params[:id2]
+    pat=session[:user_id]
     print x
     if x=="1"
       x=Favourite.new(:doctor_id => doc, :patient_id => pat)
@@ -143,7 +143,11 @@ class UsersController < ApplicationController
     else
       x=Favourite.where(:doctor_id => doc, :patient_id => pat).delete_all
     end
-    redirect_to(:action => 'search_doctor')
+    if params[:redirect]=="1"
+      redirect_to(:action => 'advanced_search_doctor')
+    elsif params[:redirect]=="2"
+      redirect_to(:actino => 'favourite_doctor_list')
+    end
   end
   #@result=Doctor.search(@searchit,@check)
   def search_perform_function
@@ -164,7 +168,6 @@ class UsersController < ApplicationController
       @doctors=JSON.parse(@doctors)
     end
   end
-  #the post method for performing the function of above method
   def advanced_search_perform_function
     name=params[:name]
     spec=params[:spec]
@@ -183,7 +186,16 @@ class UsersController < ApplicationController
     inp=inp.to_json
     redirect_to(:action => 'advanced_search_doctor', :result => inp)
   end
-  
+  #it shows appointments to patients they have their favourite doctors appointments on top... 
+  def appointment_patient_favourite
+    @doctors=Doctor.all
+    @patient=User.find(session[:user_id]).patients.first
+    @fav=Favourite.where(:patient_id => @patient.id)
+  end
+  def favourite_doctor_list
+    @patient=User.find(session[:user_id]).patients.first
+    @fav=Favourite.where(:patient_id => @patient.id)
+  end
   def new_doctor 
   end
   def list_doctor

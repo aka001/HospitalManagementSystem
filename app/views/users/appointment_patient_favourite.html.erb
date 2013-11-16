@@ -1,0 +1,107 @@
+<%= link_to("Favourite doctors", {:action => 'favourite_doctor_list'}, :class => "nav nav-pills") %>
+<br/>
+<button type="button" class="btn btn-primary">Favourites Section</button>
+<div>
+	<% if !(@fav.empty?) %>
+		<table class="table table-hover">
+			<thead>
+				<th>Username</th>
+				<th>Name</th>
+				<th>Gender</th>
+				<th>Date_of_birth</th>
+				<th>Address</th>
+				<th>Qualification</th>
+				<th>Status</th>
+			</thead>
+				<% @fav.each do |fav| %>
+				<tr>
+					<% doctor=Doctor.find(fav.doctor_id) %>
+					<% user= doctor.users %>
+					<% if !(user.empty?) %>
+						<% user=user.first %>
+						<td><%= user.username%></td>
+					<% end %>
+					<td><%= doctor.name %></td>
+					<td><%= doctor.gender %></td>
+					<td><%= doctor.date_of_birth %></td>
+					<td><%= doctor.address %></td>
+					<td><%= doctor.qualification %></td>
+					<td><%= doctor.id %></td>
+					<% x=Appointment.where(doctor_id: doctor.id, patient_id: @patient.id) %>
+					<% if x.empty? %>
+						<td><%= link_to("Request", {:action => 'request_appointment', :id1 => user.id, :id2 => session[:user_id]}, :class => "back-link") %></td>	
+					<% else %>
+						<% flag=1 %>
+						<% x.each do |xit| %>
+							<% if xit.status == 'pending' %>
+								<% flag=0 %>
+								<% break %>
+							<% end %>
+						<% end %>
+						<% if flag==0 %>
+							<% x=x.first %>
+							<td><%= x.status %></td>
+						<% else %>
+							<td><%= link_to("Request", {:action => 'request_appointment', :id1 => user.id, :id2 => session[:user_id]}, :class => "back-link") %></td>
+						<% end %>
+					<% end %>
+				</tr>
+				<% end %>
+		</table>
+	<% else %>
+		<h2>No records yet</h2>
+	<% end %>
+</div>
+<button type="button" class="btn btn-primary">All Doctors</button>
+<div>
+	<% if !(@doctors.empty?) %>
+		<table class="table table-hover">
+			<thead>
+				<th>Username</th>
+				<th>Name</th>
+				<th>Gender</th>
+				<th>Date_of_birth</th>
+				<th>Address</th>
+				<th>Qualification</th>
+				<th>Status</th>
+			</thead>
+			
+				<% @doctors.each do |doctor| %>
+				<tr>
+					<% user= doctor.users %>
+					<% if !(user.empty?) %>
+						<% user=user.first %>
+						<td><%= user.username%></td>
+					<% end %>
+					<td><%= doctor.name %></td>
+					<td><%= doctor.gender %></td>
+					<td><%= doctor.date_of_birth %></td>
+					<td><%= doctor.address %></td>
+					<td><%= doctor.qualification %></td>
+					<td><%= doctor.id %></td>
+					<% x=Appointment.where(doctor_id: doctor.id, patient_id: @patient.id) %>
+					<% if x.empty? %>
+						<td><%= link_to("Request", {:action => 'request_appointment', :id1 => user.id, :id2 => session[:user_id]}, :class => "back-link") %></td>	
+					<% else %>
+						<% flag=1 %>
+						<% x.each do |xit| %>
+							<% if xit.status == 'pending' %>
+								<% flag=0 %>
+								<% break %>
+							<% end %>
+						<% end %>
+						<% if flag==0 %>
+							<% x=x.first %>
+							<td><%= x.status %></td>
+						<% else %>
+							<td><%= link_to("Request", {:action => 'request_appointment', :id1 => user.id, :id2 => session[:user_id]}, :class => "back-link") %></td>
+						<% end %>
+					<% end %>
+					
+				</tr>
+				<% end %>
+		</table>
+	<% else %>
+		<h2>No records yet</h2>
+	<% end %>
+</div>
