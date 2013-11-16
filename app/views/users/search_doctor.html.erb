@@ -38,25 +38,12 @@
 					<td><%= doctor.address %></td>
 					<td><%= doctor.qualification %></td>
 					<td><%= doctor.id %></td>
-					<% x=Appointment.where(doctor_id: doctor.id, patient_id: @patient.id) %>
-					<% if x.empty? %>
-						<td><%= link_to("Request", {:action => 'request_appointment', :id1 => user.id, :id2 => session[:user_id]}, :class => "back-link") %></td>	
+					<% out = Favourite.where(:doctor_id => doctor.id, :patient_id => @patient.id) %>
+					<% if out.empty? %>
+						<td><%= link_to("Add to Favourites", {:action => 'favourite_action', :id => 1, :id1 => doctor.id, :id2 => @patient.id}, :class => "back-link") %></td>
 					<% else %>
-						<% flag=1 %>
-						<% x.each do |xit| %>
-							<% if xit.status == 'pending' %>
-								<% flag=0 %>
-								<% break %>
-							<% end %>
-						<% end %>
-						<% if flag==0 %>
-							<% x=x.first %>
-							<td><%= x.status %></td>
-						<% else %>
-							<td><%= link_to("Request", {:action => 'request_appointment', :id1 => user.id, :id2 => session[:user_id]}, :class => "back-link") %></td>
-						<% end %>
+						<td><%= link_to("Remove from Favourites", {:action => 'favourite_action', :id => 2, :id1 => doctor.id, :id2 => @patient.id}, :class => "back-link") %></td>
 					<% end %>
-					
 				</tr>
 				<% end %>
 		</table>

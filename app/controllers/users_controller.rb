@@ -124,10 +124,6 @@ class UsersController < ApplicationController
     @patient=@user.patients.first
     @search=[]
     @doctor=Doctor.all
-    @doctor.each do |doctor|
-      @search.insert(cnt, doctor.name)
-      cnt+=1
-    end
     @doctors=params[:id]
     # p @doctors
     if (@doctors != nil)
@@ -135,6 +131,19 @@ class UsersController < ApplicationController
     end
     @doit1=['name','qualification','specialised_fields','salary']
     @doit2=['name','qualification','specialised_fields','salary']
+  end
+  def favourite_action
+    x=params[:id]
+    doc=params[:id1]
+    pat=params[:id2]
+    print x
+    if x=="1"
+      x=Favourite.new(:doctor_id => doc, :patient_id => pat)
+      x.save
+    else
+      x=Favourite.where(:doctor_id => doc, :patient_id => pat).delete_all
+    end
+    redirect_to(:action => 'search_doctor')
   end
   #@result=Doctor.search(@searchit,@check)
   def search_perform_function
@@ -144,6 +153,35 @@ class UsersController < ApplicationController
     @result= @result.to_json;
     #redirect_to(:action => 'search_doctor', :result => result)
     redirect_to(:action => 'search_doctor', :id => @result)
+  end
+  #to perform search on basis on three categories and add to favourites
+  def advanced_search_doctor
+    @patient=User.find(session[:user_id]).patients.first
+    @city=City.all
+    @spec=Specialisation.all
+    @doctors=params[:result]
+    if @doctors != nil
+      @doctors=JSON.parse(@doctors)
+    end
+  end
+  #the post method for performing the function of above method
+  def advanced_search_perform_function
+    name=params[:name]
+    spec=params[:spec]
+    city=params[:city]
+    if name.empty?
+      name=nil
+    end
+    if spec.empty?
+      spec=nil
+    end
+    if city.empty?
+      city=nil
+    end
+    inp=Doctor.advanced_search(name, spec, city)
+    puts inp.inspect
+    inp=inp.to_json
+    redirect_to(:action => 'advanced_search_doctor', :result => inp)
   end
   
   def new_doctor 

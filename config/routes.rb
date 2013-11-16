@@ -24,6 +24,9 @@ Project::Application.routes.draw do
   post "users/update_assistant"
   get "users/search_doctor"
   post "users/search_perform_function"
+  get "users/favourite_action"  
+  get "users/advanced_search_doctor"
+  get "users/advanced_search_perform_function"
     
   get "users/list_patient"
   #post "users/list_patient"

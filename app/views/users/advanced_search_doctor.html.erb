@@ -1,0 +1,78 @@
+  <script type="text/javascript">
+    var config = {
+      '.chosen-select'           : {},
+      '.chosen-select-deselect'  : {allow_single_deselect:true},
+      '.chosen-select-no-single' : {disable_search_threshold:10},
+      '.chosen-select-no-results': {no_results_text:'Oops, nothing found!'},
+      '.chosen-select-width'     : {width:"95%"}
+    }
+    for (var selector in config) {
+      $(selector).chosen(config[selector]);
+    }
+  </script>
+<form action="advanced_search_perform_function" method="get">
+	<em>Name: </em><input type="text" name="name"><br>
+	<div class="side-by-side clearfix">
+	<em>Specialisation:</em>
+	<select name="spec" data-placeholder="Choose a City..." class="chosen-select" style="width:350px;" tabindex="2">
+		<option value=""></option>
+		<% @spec.each do |spec|%>
+			<option value="<%=spec.name%>"><%=spec.name%></option>
+		<%end%>
+	</select>
+	<br />
+	<br />
+	<em>City:</em>
+	<select name="city" data-placeholder="Choose a City..." class="chosen-select" style="width:350px;" tabindex="2">
+		<option value=""></option>
+		<% @city.each do |city|%>
+			<option value="<%=city.name%>"><%=city.name%></option>
+		<%end%>
+	</select>
+	</div>
+	<input type="submit" value="submit">
+</form>
+<% if @doctors != nil %>
+		<table>
+			<thead>
+				<th>Username</th>
+				<th>Name</th>
+				<th>Gender</th>
+				<th>Date_of_birth</th>
+				<th>Address</th>
+				<th>Qualification</th>
+				<th>Status</th>
+			</thead>
+			
+				<% @doctors.each do |doc| %>
+				<tr>
+					<% doctor=Doctor.find(doc['id']) %>
+					<% user= doctor.users %>
+					<% if !(user.empty?) %>
+						<% user=user.first %>
+						<td><%= user.username%></td>
+					<% end %>
+					<td><%= doctor.name %></td>
+					<td><%= doctor.gender %></td>
+					<td><%= doctor.date_of_birth %></td>
+					<td><%= doctor.address %></td>
+					<td><%= doctor.qualification %></td>
+					<td><%= doctor.id %></td>
+					<% out = Favourite.where(:doctor_id => doctor.id, :patient_id => @patient.id) %>
+					<% if out.empty? %>
+						<td><%= link_to("Add to Favourites", {:action => 'favourite_action', :id => 1, :id1 => doctor.id, :id2 => @patient.id}, :class => "back-link") %></td>
+					<% else %>
+						<td><%= link_to("Remove from Favourites", {:action => 'favourite_action', :id => 2, :id1 => doctor.id, :id2 => @patient.id}, :class => "back-link") %></td>
+					<% end %>
+				</tr>
+				<% end %>
+		</table>
+	<% end %>
+
+
+
+
+
+
+
+

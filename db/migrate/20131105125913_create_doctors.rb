@@ -10,7 +10,7 @@ class CreateDoctors < ActiveRecord::Migration
       t.string :specialised_fields
       t.integer :experience_years
       t.integer :salary
-
+      t.string :country
       t.timestamps
     end
   end
