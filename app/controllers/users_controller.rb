@@ -73,6 +73,11 @@ class UsersController < ApplicationController
    end
   end
   def show_appointment
+    if params[:d]
+    attribute=params.require(:d).permit(:start,:end)
+    @start=DateTime.new(attribute["start(1i)"].to_i,attribute["start(2i)"].to_i,attribute["start(3i)"].to_i,attribute["start(4i)"].to_i,attribute["start(5i)"].to_i)    
+    @end=DateTime.new(attribute["end(1i)"].to_i,attribute["end(2i)"].to_i,attribute["end(3i)"].to_i,attribute["end(4i)"].to_i,attribute["end(5i)"].to_i)    
+    end
     use=session[:user_id]
     @user=User.find(use)
     @doc_id=@user.doctors.first

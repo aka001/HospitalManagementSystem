@@ -59,7 +59,6 @@ ActiveRecord::Schema.define(version: 20131116155740) do
     t.string   "specialised_fields"
     t.integer  "experience_years"
     t.integer  "salary"
-    t.string   "country"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -79,7 +78,6 @@ ActiveRecord::Schema.define(version: 20131116155740) do
   end
 
   create_table "medicines", force: true do |t|
-    t.text     "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

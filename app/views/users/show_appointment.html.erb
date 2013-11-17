@@ -1,12 +1,27 @@
 <% if !(@app.empty?) %>
 <table>
+<tr>
+		<%=form_tag({:action=>'show_appointment'}) do%>
+				<td><%=label_tag("start")%>	<%=datetime_select("d","start",:default=>@start)%></td>
+				<td>	<%=label_tag("end")%>	<%=datetime_select("d","end",:default=>@end)%></td></tr>
+<tr>			<td>	<%=submit_tag("filter")%></td></tr>
+				<%end%>
+				</table>
+<table>
 	<tr>
 		<th>patient_id</th>
 		<th>Date Requested</th>
 		<th>Status</th>
 		<th>Action</th>
 	</tr>
-	<% @app.each do |app| %>
+	<tr>
+	<% if @start &&@end%>
+	<%@temp=@app.where("dateit >= :start_date AND dateit <= :end_date",{start_date: @start, end_date: @end})%>
+	<%else%>
+	<%@temp=@app%>
+	<%end%>
+	<!--filter form-->
+	<%@temp.each do |app| %>
 	<tr>
 		<% patid=app.patient_id %>
 		<% patient=Patient.find(patid) %>

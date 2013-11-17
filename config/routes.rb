@@ -46,6 +46,7 @@ Project::Application.routes.draw do
   post "users/confirm_appointment"
   
   get "users/show_appointment"
+  post "users/show_appointment"
   #post "users/action_appointment_doctor"
   get "users/action_appointment_doctor"
   
