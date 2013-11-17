@@ -8,10 +8,13 @@
 			<%@page_slug="doc"%>
 		<% elsif @flag2 == 1 %>
 			<%= render(:partial =>'/users/patient_role') %>
+			<%@page_slug="patient"%>
 		<% elsif @flag3 == 1 %>
 			<%= render(:partial => '/users/assistant_role') %>
+			<%@page_slug="ass"%>
 		<% elsif @flag4 == 1 %>
 			<%= render(:partial => '/users/admin_role') %>
+			<%@page_slug="admin"%>
 		<% end %>
 	</ul>
 </div>
