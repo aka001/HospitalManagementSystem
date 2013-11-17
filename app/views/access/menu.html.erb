@@ -5,6 +5,7 @@
 	<ul>
 		<% if @flag1 == 1 %>
 			<%= render(:partial =>'/users/doctor_role') %>
+			<%@page_slug="doc"%>
 		<% elsif @flag2 == 1 %>
 			<%= render(:partial =>'/users/patient_role') %>
 		<% elsif @flag3 == 1 %>
