@@ -2,18 +2,13 @@
   <h2>Request Appointment</h2>
   <p>Doctor Name: <%= @doctors.name %> </p>
   <p>Patient Name: <%= @patients.name%></p>
-  <%= form_for(:appointment, :url => {:action => 'confirm_appointment', :id1 => @doc_id, :id2 => @pat_id}) do |f| %>
-  
-		<table>
-			<tr>
-				<th>Date</th>
-				<td><%= f.text_field(:dateit)%></td>
-				<%#= f.datetime_select(:dateit,:order=>[:day,:month,:year],:date_separator=>"-")%>
-				<td><%= f.datetime_select(:dateit,:order=>[:day,:month,:year])%></td>
-			</tr>
-		</table>
-	<div class="form-buttons">
-		<%= submit_tag("Submit Request")%>
-	</div>
-  <% end %>
+  <form action="confirm_appointment" method="get">
+  	<div class="well">
+  		<input name="dateit" type="text" id="dp1">
+  	</div>
+  </form>
 </div>
+
+
+	<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
