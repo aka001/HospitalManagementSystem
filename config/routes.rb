@@ -43,7 +43,7 @@ Project::Application.routes.draw do
   
   get "users/appointment"
   get "users/request_appointment"
-  post "users/confirm_appointment"
+  get "users/confirm_appointment"
   
   get "users/show_appointment"
   post "users/show_appointment"

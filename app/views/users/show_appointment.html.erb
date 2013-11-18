@@ -1,7 +1,7 @@
 <%@page_title="Appointments"%>
 <%@page_lead="Manage your Schedule"%>
 
-	<% if @start &&@end%>
+	<% if @start &&@end &&@all==0%>
 		<%@temp=@app.where("dateit >= :start_date AND dateit <= :end_date",{start_date: @start, end_date: @end})%>
 	<%else%>
 		<%@temp=@app%>
@@ -14,7 +14,7 @@
 <div class="control-group">
      <label class="control-label">Start</label>
                 <div class="controls input-append date form_datetime" data-date="<%=@start.to_s(:db)%>" data-date-format="dd MM yyyy - HH:ii p" data-link-field="dtp_input1">
-                <input name="start" type="text" value="<%=@start.to_s(:db)%>" readonly>
+                <input name="start" type="text" value="<%=if @startinit==nil then '' else @startinit.to_s(:db) end%>" readonly>
                 <span class="add-on"><i class="icon-remove"></i></span>
                 <span class="add-on"><i class="icon-th"></i></span>
                 </div>
@@ -22,7 +22,7 @@
 
      <label class="control-label">End</label>
                 <div class="controls input-append date form_datetime" data-date="<%=@end.to_s(:db)%>"" data-date-format="dd MM yyyy - HH:ii z" data-link-field="dtp_input1">
-                <input name="end" type="text" value="<%=@end.to_s(:db)%>"readonly>
+                <input name="end" type="text" value="<%=if @endinit==nil then '' else @endinit.to_s(:db) end%>"readonly>
                 <span class="add-on"><i class="icon-remove"></i></span>
                 <span class="add-on"><i class="icon-th"></i></span>
                 </div>
@@ -30,6 +30,7 @@
 		<input type="submit" value="Filter" name="submit"/>	
 		<input type="submit" value="Today" name="submit"/>
 		<input type="submit" value="This month" name="submit"/>
+		<input type="submit" value="All" name="submit"/>
 <hr />
         </div>
   </form>

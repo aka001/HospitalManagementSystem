@@ -4,15 +4,19 @@
 <div class="container">
 
   <form action="confirm_appointment" method="get" class="form-horizontal">
-<div class="control-group">
+	<div class="control-group">
      <label class="control-label">Request date and time</label>
-		<div class="controls input-append date form_datetime" data-date="1979-09-16T05:25:07Z" data-date-format="dd MM yyyy - HH:ii p" data-link-field="dtp_input1">
+		<div class="controls input-append date form_datetime" data-date="<%=DateTime.now.to_s(:db)%>" data-date-format="dd MM yyyy - HH:ii p" data-link-field="dtp_input1">
   		<input name="dateit" type="text" readonly>
 		<span class="add-on"><i class="icon-remove"></i></span>
 		<span class="add-on"><i class="icon-th"></i></span>
 		</div>
 		<input type="hidden" id="dtp_input1" value="" /><br/>
+		
 	</div>
+	<input type="hidden" name="id1" value=<%=@doc_id%> /><br/>
+	<input type="hidden" name="id2" value=<%=@pat_id%> /><br/>
+	<input type="submit" value="submit"></input>
   </form>
 </div>
 

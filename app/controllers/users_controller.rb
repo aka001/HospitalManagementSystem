@@ -56,32 +56,46 @@ class UsersController < ApplicationController
     @patients=Patient.find(@pat_id)
   end
   def confirm_appointment
-    attribute=params.require(:appointment).permit(:dateit)
-    print "hie"
-    puts attribute.inspect
+    #attribute=params.require(:appointment).permit(:dateit, :id1, :id2)
+    #puts attribute.inspect
     app=Appointment.new
     idd1=params[:id1]
     idd2=params[:id2]
     app.doctor_id=params[:id1]
     app.patient_id=params[:id2]
-    app.dateit = DateTime.new(attribute["dateit(1i)"].to_i,attribute["dateit(2i)"].to_i,attribute["dateit(3i)"].to_i,attribute["dateit(4i)"].to_i,attribute["dateit(5i)"].to_i)    
+    #app.dateit = DateTime.new(attribute["dateit(1i)"].to_i,attribute["dateit(2i)"].to_i,attribute["dateit(3i)"].to_i,attribute["dateit(4i)"].to_i,attribute["dateit(5i)"].to_i)
+    app.dateit=params[:dateit].to_datetime    
     app.status='pending'
     if app.save
 	  redirect_to(:action => 'appointment_patient_favourite')
-   else
+    else
    	redirect_to request_appointment(:id1 => idd1, :id2 => idd2)
    end
   end
   def show_appointment
+    @all=0
     if params[:submit]=='Filter'
     @start=params[:start].to_datetime
     @end=params[:end].to_datetime
+    @startinit=params[:start].to_datetime
+    @endinit=params[:end].to_datetime
     elsif params[:submit]=='This month'
+    @startinit=DateTime.now.beginning_of_month()
+    @endinit=DateTime.now.end_of_month()
     @start=DateTime.now.beginning_of_month()
     @end=DateTime.now.end_of_month()
+    elsif params[:submit]=='All'
+      @all=1
+      @startinit=nil
+      @endinit=nil
+      @start=DateTime.now.beginning_of_day()
+      @end=DateTime.now.end_of_day()
     else
     @start=DateTime.now.beginning_of_day()
     @end=DateTime.now.end_of_day()
+    @startinit=DateTime.now.beginning_of_day()
+    @endinit=DateTime.now.end_of_day()
+    
     end
     use=session[:user_id]
     @user=User.find(use)
