@@ -1,0 +1,77 @@
+<%@page_title="Appointments"%>
+<%@page_lead="Manage your Schedule"%>
+
+	<% if @start &&@end%>
+		<%@temp=@app.where("dateit >= :start_date AND dateit <= :end_date",{start_date: @start, end_date: @end})%>
+	<%else%>
+		<%@temp=@app%>
+	<%end%>
+<%@page_slug="doc"%>
+
+<% if !(@app.empty?) %>
+
+     <form action="show_appointment" method="get" class="form-horizontal">
+<div class="control-group">
+     <label class="control-label">Start</label>
+                <div class="controls input-append date form_datetime" data-date="<%=@start.to_s(:db)%>" data-date-format="dd MM yyyy - HH:ii p" data-link-field="dtp_input1">
+                <input name="start" type="text value="<%=@start.to_s(:db)%>" readonly>
+                <span class="add-on"><i class="icon-remove"></i></span>
+                <span class="add-on"><i class="icon-th"></i></span>
+                </div>
+                <input type="hidden" id="dtp_input1" value="" />
+
+     <label class="control-label">End</label>
+                <div class="controls input-append date form_datetime" data-date="<%=@end.to_s(:db)%>"" data-date-format="dd MM yyyy - HH:ii z" data-link-field="dtp_input1">
+                <input name="end" type="text" value="<%=@start.to_s(:db)%>"readonly>
+                <span class="add-on"><i class="icon-remove"></i></span>
+                <span class="add-on"><i class="icon-th"></i></span>
+                </div>
+                <input type="hidden" id="dtp_input1" value="" />
+		<input type="submit" value="Filter" name="submit"/>	
+		<input type="submit" value="Today" name="submit"/>
+		<input type="submit" value="This month" name="submit"/>
+<hr />
+        </div>
+  </form>
+</div>
+
+	<% if @temp.empty?%>
+		<h2>No records found</h2>	
+	<%else%>
+<table>
+	<tr>
+		<th>Date</th>
+		<th>Patient_id</th>
+		<th>Status</th>
+		<th>Action</th>
+	</tr>
+	<tr>
+	<!--filter form-->
+	<%@temp.each do |app| %>
+	<tr>
+		<% patid=app.patient_id %>
+		<% patient=Patient.find(patid) %>
+		<% user=patient.users.first.inspect %>
+		<td><%= app['dateit']%></td>
+		<td><%= app['patient_id']%></td>
+
+		<td><%= app['status']%></td>
+		<% if app['status']=='pending'%>
+			<td><%= link_to("Confirm", {:action => 'action_appointment_doctor', :id1 => "confirm", :id2 => @doc_id, :id3 => app['patient_id']}, :class => "back-link") %></td>
+			<td><%= link_to("Cancel", {:action => 'action_appointment_doctor', id1: "cancel", id2: @doc_id, id3: app['patient_id']}, :class => "back-link") %></td>
+		<% elsif app['status']=='confirm' %>
+			<%= app['id'] %>
+			<% testit=Prescription.where(:appointment_id => app['id'])%>
+			<% if testit.empty?%>
+				<td><%= link_to("Prescription", {:action => 'prescription_doctor', :id => app['id']}, :class => "back-link") %></td>
+			<% else %>
+				<td><%= link_to("Show Prescription", {:action => 'show_prescription', :id => app['id']}, :class => 'back-link')%>
+			<% end %>
+		<% end %>
+	</tr>
+	<% end %>
+	<%end%>
+</table>
+<% else %>
+	<h2>No records Found</h2>
+<% end %>

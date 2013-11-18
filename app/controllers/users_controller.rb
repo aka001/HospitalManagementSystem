@@ -73,10 +73,15 @@ class UsersController < ApplicationController
    end
   end
   def show_appointment
-    if params[:d]
-    attribute=params.require(:d).permit(:start,:end)
-    @start=DateTime.new(attribute["start(1i)"].to_i,attribute["start(2i)"].to_i,attribute["start(3i)"].to_i,attribute["start(4i)"].to_i,attribute["start(5i)"].to_i)    
-    @end=DateTime.new(attribute["end(1i)"].to_i,attribute["end(2i)"].to_i,attribute["end(3i)"].to_i,attribute["end(4i)"].to_i,attribute["end(5i)"].to_i)    
+    if params[:submit]=='Filter'
+    @start=params[:start].to_datetime
+    @end=params[:end].to_datetime
+    elsif params[:submit]=='This month'
+    @start=DateTime.now.beginning_of_month()
+    @end=DateTime.now.end_of_month()
+    else
+    @start=DateTime.now.beginning_of_day()
+    @end=DateTime.now.end_of_day()
     end
     use=session[:user_id]
     @user=User.find(use)
