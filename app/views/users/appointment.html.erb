@@ -37,7 +37,15 @@
 						<% end %>
 						<% if flag==0 %>
 							<% x=x.first %>
-							<td><%= x.status %></td>
+							<td>pending</td>
+							<% if x.status == 'pending'%>
+								<td><%= link_to("Cancel", {:action => 'action_appointment_doctor', id1: "cancel", id2: doctor.id, id3: @patient.id}, :class => "back-link") %></td>
+							<%else%>
+								<% if x.status == 'served'%>
+								<td><%= link_to("Show Prescription", {:action => 'prescription_doctor', :id => x.id}, :class => "back-link") %></td>
+								<% end %>
+							<%end%>
+							
 						<% else %>
 							<td><%= link_to("Request", {:action => 'request_appointment', :id1 => user.id, :id2 => session[:user_id]}, :class => "back-link") %></td>
 						<% end %>

@@ -73,29 +73,32 @@ class UsersController < ApplicationController
    end
   end
   def show_appointment
+    user=User.find(session[:user_id])
+    if user.roles.first.name=='patient'
+      redirect_to appointment
+    end
     @all=0
     if params[:submit]=='Filter'
-    @start=params[:start].to_datetime
-    @end=params[:end].to_datetime
-    @startinit=params[:start].to_datetime
-    @endinit=params[:end].to_datetime
+    @start=DateTime.parse(params[:start].to_datetime.to_s(:db))
+    @end=DateTime.parse(params[:end].to_datetime.to_s(:db))
+    @startinit=DateTime.parse(params[:start].to_datetime.to_s(:db))
+    @endinit=DateTime.parse(params[:end].to_datetime.to_s(:db))
     elsif params[:submit]=='This month'
-    @startinit=DateTime.now.beginning_of_month()
-    @endinit=DateTime.now.end_of_month()
-    @start=DateTime.now.beginning_of_month()
-    @end=DateTime.now.end_of_month()
+    @startinit=DateTime.parse(DateTime.now.beginning_of_month().to_s(:db))
+    @endinit=DateTime.parse(DateTime.now.end_of_month().to_s(:db))
+    @start=DateTime.parse(DateTime.now.beginning_of_month().to_s(:db))
+    @end=DateTime.parse(DateTime.now.end_of_month().to_s(:db))
     elsif params[:submit]=='All'
       @all=1
       @startinit=nil
       @endinit=nil
-      @start=DateTime.now.beginning_of_day()
-      @end=DateTime.now.end_of_day()
+      @start=DateTime.parse(DateTime.now.beginning_of_day().to_s(:db))
+      @end=DateTime.parse(DateTime.now.end_of_day().to_s(:db))
     else
-    @start=DateTime.now.beginning_of_day()
-    @end=DateTime.now.end_of_day()
-    @startinit=DateTime.now.beginning_of_day()
-    @endinit=DateTime.now.end_of_day()
-    
+    @start=DateTime.parse(DateTime.now.beginning_of_day().to_s(:db))
+    @end=DateTime.parse(DateTime.now.end_of_day().to_s(:db))
+    @startinit=DateTime.parse(DateTime.now.beginning_of_day().to_s(:db))
+    @endinit=DateTime.parse(DateTime.now.end_of_day().to_s(:db))
     end
     use=session[:user_id]
     @user=User.find(use)

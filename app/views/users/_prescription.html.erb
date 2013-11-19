@@ -12,8 +12,12 @@
 		<td><%= f.text_area(:prognosis) %></td>
 	</tr>
 	<tr>
-		<th>Drugs</th>
-		<td><%= f.text_field(:drugs) %></td>
+		<th></th>
+		<td><%= #f.text_field(:drugs) 
+		%>
+		<textarea style="width: 300%" name="prognosis" placeholder="Medicines"></textarea>
+		
+		</td>
 	</tr>
 
 	<tr>
