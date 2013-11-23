@@ -78,7 +78,7 @@ class UsersController < ApplicationController
       redirect_to appointment
     end
     @all=0
-    if params[:submit]=='Filter'
+    if params[:submit]=='Filter'and params[:start]!="" and params[:end]!=""
     @start=DateTime.parse(params[:start].to_datetime.to_s(:db))
     @end=DateTime.parse(params[:end].to_datetime.to_s(:db))
     @startinit=DateTime.parse(params[:start].to_datetime.to_s(:db))
@@ -108,15 +108,23 @@ class UsersController < ApplicationController
   end
   def action_appointment_doctor
     stat=params[:id1]
-    doc_id=params[:id2]
-    pat_id=params[:id3]
-    print stat, doc_id, pat_id
-    findit=Appointment.where(doctor_id: doc_id, patient_id: pat_id).first
+    ap_id=params[:id2]
+    print stat, ap_id
+    findit=Appointment.where(id:ap_id).first
     findit.status=stat
+    dcname=Doctor.find(findit.doctor_id).name
     #redirect_to(:action => 'show_doctor')
     if findit.save
+      str='Your appointment on '
+      str+=findit.dateit.to_s
+      str+=' with Dr.'
+      str+= dcname.to_s
+      str+=' was approved'
+      ActiveSupport::Notifications.instrument("appointment",user_id:findit.patient_id,links:"/access/login",type:"confirm",notification:str)
+      flash[:notify]="Appointment waiting for approval"
       redirect_to(:action => 'show_appointment')
     else
+      flash[:notify]="Oops! Something went wrong"
       redirect_to(:action => 'show_appointment')
     end
     #redirect_to(:action => 'show_appointment')

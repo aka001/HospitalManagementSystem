@@ -7,6 +7,11 @@
 		<%@temp=@app%>
 	<%end%>
 <%@page_slug="doc"%>
+<%if flash[:notify]%>
+<div class="alert alert-info">
+<%=flash[:notify]%>
+</div>
+<%end%>
 
 <% if !(@app.empty?) %>
 
@@ -14,23 +19,23 @@
 <div class="control-group">
      <label class="control-label">Start</label>
                 <div class="controls input-append date form_datetime" data-date="<%=@start.to_s(:db)%>" data-date-format="dd MM yyyy - HH:ii p" data-link-field="dtp_input1">
-                <input name="start" type="text" value="<%=if @startinit==nil then '' else @startinit.to_s(:db) end%>" readonly>
+                <input name="start" type="text" value="<%=if @startinit==nil then '' else @startinit.to_s(:db) end%>" readonly />
                 <span class="add-on"><i class="icon-remove"></i></span>
                 <span class="add-on"><i class="icon-th"></i></span>
                 </div>
                 <input type="hidden" id="dtp_input1" value="" />
 
      <label class="control-label">End</label>
-                <div class="controls input-append date form_datetime" data-date="<%=@end.to_s(:db)%>"" data-date-format="dd MM yyyy - HH:ii z" data-link-field="dtp_input1">
-                <input name="end" type="text" value="<%=if @endinit==nil then '' else @endinit.to_s(:db) end%>"readonly>
+                <div class="controls input-append date form_datetime" data-date="<%=@end.to_s(:db)%>" data-date-format="dd MM yyyy - HH:ii z" data-link-field="dtp_input1">
+                <input name="end" type="text" value="<%=if @endinit==nil then '' else @endinit.to_s(:db) end%>" readonly />
                 <span class="add-on"><i class="icon-remove"></i></span>
                 <span class="add-on"><i class="icon-th"></i></span>
                 </div>
                 <input type="hidden" id="dtp_input1" value="" />
-		<input type="submit" value="Filter" name="submit"/>	
-		<input type="submit" value="Today" name="submit"/>
-		<input type="submit" value="This month" name="submit"/>
-		<input type="submit" value="All" name="submit"/>
+		<input type="submit" value="Filter" name="submit" class=<%if params[:submit]=='Filter'%>"btn btn-primary btn-sm active"<%else%>"btn btn-default btn-sm"<%end%>/>	
+		<input type="submit" value="Today" name="submit" class=<%if params[:submit]=='Today'%>"btn btn-primary btn-sm active"<%else%>"btn btn-default btn-sm"<%end%>/>
+		<input type="submit" value="This month" name="submit" class=<%if params[:submit]=='This month'%>"btn btn-primary btn-sm active"<%else%>"btn btn-default btn-sm"<%end%>/>
+		<input type="submit" value="All" name="submit" class=<%if params[:submit]=='All'%>"btn btn-primary btn-sm active"<%else%>"btn btn-default btn-sm"<%end%>/>
 <hr />
         </div>
   </form>
@@ -58,15 +63,15 @@
 
 		<td><%= app['status']%></td>
 		<% if app['status']=='pending'%>
-			<td><%= link_to("Confirm", {:action => 'action_appointment_doctor', :id1 => "confirm", :id2 => @doc_id, :id3 => app['patient_id']}, :class => "back-link") %></td>
-			<td><%= link_to("Cancel", {:action => 'action_appointment_doctor', id1: "cancel", id2: @doc_id, id3: app['patient_id']}, :class => "back-link") %></td>
+			<td><%= link_to("Confirm", {:action => 'action_appointment_doctor', :id1 => "confirm",:id2=>app.id} , :class => "btn btn-warning") %></td>
+			<td><%= link_to("Cancel", {:action => 'action_appointment_doctor', id1: "cancel", id2:app.id}, :class => "btn btn-danger") %></td>
 		<% elsif app['status']=='confirm' %>
 			<%= app['id'] %>
 			<% testit=Prescription.where(:appointment_id => app['id'])%>
 			<% if testit.empty?%>
-				<td><%= link_to("Prescription", {:action => 'prescription_doctor', :id => app['id']}, :class => "back-link") %></td>
+				<td><%= link_to("Prescription", {:action => 'prescription_doctor', :id => app['id']}, :class => "btn btn-primary") %></td>
 			<% else %>
-				<td><%= link_to("Show Prescription", {:action => 'show_prescription', :id => app['id']}, :class => 'back-link')%>
+				<td><%= link_to("Show Prescription", {:action => 'show_prescription', :id => app['id']}, :class => 'btn btn-success')%>
 			<% end %>
 		<% end %>
 	</tr>

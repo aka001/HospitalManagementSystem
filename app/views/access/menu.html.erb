@@ -16,5 +16,18 @@
 			<%= render(:partial => '/users/admin_role') %>
 			<%@page_slug="admin"%>
 		<% end %>
+		<div class="page-header">
+		<h2>Notifications</h2>
+		</div>
+		<%n=Notification.where(:user_id=>session[:user_id]).order("created_at DESC")%>
+		<%n.each do |t|%>
+		<blockquote>
+		<%=t['notification']%>
+		<br/>
+		Click <a href="<%=t['links']%>">here</a> for additional info.<br/>
+		<small><%=t['created_at']%></small>
+		</blockquote>
+		<hr/>
+		<%end%>
 	</ul>
 </div>
