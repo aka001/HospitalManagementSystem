@@ -111,6 +111,9 @@ ActiveRecord::Schema.define(version: 20131123164154) do
   end
 
   create_table "medicines", force: true do |t|
+    t.text     "name"
+    t.integer  "quantity"
+    t.string   "sigcode"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
