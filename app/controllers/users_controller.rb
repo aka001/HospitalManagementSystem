@@ -1,4 +1,6 @@
 require 'json'
+require 'calendar_helper'
+
 class UsersController < ApplicationController
   #before_action :set_user, only: [:show, :edit, :update, :destroy]
   before_filter :confirm_logged_in
@@ -46,27 +48,28 @@ class UsersController < ApplicationController
     @patient=@user.patients.first
   end
   def request_appointment
-    @user_id=params[:id1]
+    @user_id=params[:docid]
     @user=User.find(@user_id)
-    @doc_id=@user.doctors.first.id
-    @doctors=Doctor.find(@doc_id)
-    @user_id2=params[:id2]
+    @doctors=@user.doctors.first
+    @doc_id=@doctors.id
+    @user_id2=session[:user_id]
     @user2=User.find(@user_id2)
-    @pat_id=@user2.patients.first.id
-    @patients=Patient.find(@pat_id)
+    @patients=@user2.patients.first
+    @pat_id=@patients.id
   end
   def confirm_appointment
     #attribute=params.require(:appointment).permit(:dateit, :id1, :id2)
     #puts attribute.inspect
     app=Appointment.new
-    idd1=params[:id1]
-    idd2=params[:id2]
     app.doctor_id=params[:id1]
     app.patient_id=params[:id2]
     #app.dateit = DateTime.new(attribute["dateit(1i)"].to_i,attribute["dateit(2i)"].to_i,attribute["dateit(3i)"].to_i,attribute["dateit(4i)"].to_i,attribute["dateit(5i)"].to_i)
     app.dateit=params[:dateit].to_datetime    
     app.status='pending'
     if app.save
+      str='You have a new pending request from '
+      str+= Patient.find(params[:id2]).name
+    	ActiveSupport::Notifications.instrument("appointment",user_id:Doctor.find(params[:id1]).users.first.id,links:"/users/show_appointment?end="+params[:dateit].to_datetime.to_s(:db)+"&start="+params[:dateit].to_datetime.to_s(:db)+"&submit=Filter",type:"request",notification:str)
 	  redirect_to(:action => 'appointment_patient_favourite')
     else
    	redirect_to request_appointment(:id1 => idd1, :id2 => idd2)
@@ -108,9 +111,9 @@ class UsersController < ApplicationController
   end
   def action_appointment_doctor
     stat=params[:id1]
-    ap_id=params[:id2]
+    ap_id=params[:app_id]
     print stat, ap_id
-    findit=Appointment.where(id:ap_id).first
+    findit=Appointment.find(ap_id)
     findit.status=stat
     dcname=Doctor.find(findit.doctor_id).name
     #redirect_to(:action => 'show_doctor')
@@ -119,9 +122,10 @@ class UsersController < ApplicationController
       str+=findit.dateit.to_s
       str+=' with Dr.'
       str+= dcname.to_s
-      str+=' was approved'
-      ActiveSupport::Notifications.instrument("appointment",user_id:findit.patient_id,links:"/access/login",type:"confirm",notification:str)
-      flash[:notify]="Appointment waiting for approval"
+      str+=' was '
+      str+=findit.status
+      ActiveSupport::Notifications.instrument("appointment",user_id:Patient.find(findit.patient_id).users.first.id,links:"/users/appointment_favourite",type:findit.status,notification:str)
+      flash[:notify]="Appointment with "+ Patient.find(findit.patient_id).name+" Confirmed"
       redirect_to(:action => 'show_appointment')
     else
       flash[:notify]="Oops! Something went wrong"

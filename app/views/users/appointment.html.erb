@@ -1,6 +1,8 @@
+<% @page_slug = "patient"%>
+<br/>
 <div>
 	<% if !(@doctors.empty?) %>
-		<table>
+		<table class="table table-hover">
 			<thead>
 				<th>Username</th>
 				<th>Name</th>
@@ -26,28 +28,17 @@
 					<td><%= doctor.id %></td>
 					<% x=Appointment.where(doctor_id: doctor.id, patient_id: @patient.id) %>
 					<% if x.empty? %>
-						<td><%= link_to("Request", {:action => 'request_appointment', :id1 => user.id, :id2 => session[:user_id]}, :class => "back-link") %></td>	
+						<td><%= link_to("Request", {:action => 'request_appointment', :docid => user.id}, :class => "back-link") %></td>	
 					<% else %>
+						<% x=x.last %>
 						<% flag=1 %>
-						<% x.each do |xit| %>
-							<% if xit.status == 'pending' %>
-								<% flag=0 %>
-								<% break %>
-							<% end %>
+						<% if x.status == 'pending' %>
+							<% flag=0 %>
 						<% end %>
 						<% if flag==0 %>
-							<% x=x.first %>
-							<td>pending</td>
-							<% if x.status == 'pending'%>
-								<td><%= link_to("Cancel", {:action => 'action_appointment_doctor', id1: "cancel", id2: doctor.id, id3: @patient.id}, :class => "back-link") %></td>
-							<%else%>
-								<% if x.status == 'served'%>
-								<td><%= link_to("Show Prescription", {:action => 'prescription_doctor', :id => x.id}, :class => "back-link") %></td>
-								<% end %>
-							<%end%>
-							
+							<td><%= x.status %></td>
 						<% else %>
-							<td><%= link_to("Request", {:action => 'request_appointment', :id1 => user.id, :id2 => session[:user_id]}, :class => "back-link") %></td>
+							<td><%= link_to("Request", {:action => 'request_appointment', :docid => user.id}, :class => "back-link") %></td>
 						<% end %>
 					<% end %>
 					

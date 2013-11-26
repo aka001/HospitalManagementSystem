@@ -6,12 +6,12 @@
 	<%else%>
 		<%@temp=@app%>
 	<%end%>
-<%@page_slug="doc"%>
 <%if flash[:notify]%>
 <div class="alert alert-info">
 <%=flash[:notify]%>
 </div>
 <%end%>
+<%require 'calendar_helper'%>
 
 <% if !(@app.empty?) %>
 
@@ -63,8 +63,8 @@
 
 		<td><%= app['status']%></td>
 		<% if app['status']=='pending'%>
-			<td><%= link_to("Confirm", {:action => 'action_appointment_doctor', :id1 => "confirm",:id2=>app.id} , :class => "btn btn-warning") %></td>
-			<td><%= link_to("Cancel", {:action => 'action_appointment_doctor', id1: "cancel", id2:app.id}, :class => "btn btn-danger") %></td>
+			<td><%= link_to("Confirm", {:action => 'action_appointment_doctor', :id1 => "confirm",:app_id=>app.id} , :class => "btn btn-warning") %></td>
+			<td><%= link_to("Cancel", {:action => 'action_appointment_doctor', id1: "cancel", app_id:app.id}, :class => "btn btn-danger") %></td>
 		<% elsif app['status']=='confirm' %>
 			<%= app['id'] %>
 			<% testit=Prescription.where(:appointment_id => app['id'])%>

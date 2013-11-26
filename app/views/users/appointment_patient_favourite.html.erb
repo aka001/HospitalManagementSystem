@@ -30,7 +30,7 @@
 					<td><%= doctor.id %></td>
 					<% x=Appointment.where(doctor_id: doctor.id, patient_id: @patient.id) %>
 					<% if x.empty? %>
-						<td><%= link_to("Request", {:action => 'request_appointment', :id1 => user.id, :id2 => session[:user_id]}, :class => "back-link") %></td>	
+						<td><%= link_to("Request", {:action => 'request_appointment', :docid => user.id}, :class => "back-link") %></td>	
 					<% else %>
 						<% flag=1 %>
 						<% x.each do |xit| %>
@@ -43,7 +43,7 @@
 							<% x=x.first %>
 							<td><%= x.status %></td>
 						<% else %>
-							<td><%= link_to("Request", {:action => 'request_appointment', :id1 => user.id, :id2 => session[:user_id]}, :class => "back-link") %></td>
+							<td><%= link_to("Request", {:action => 'request_appointment', :docid => user.id}, :class => "back-link") %></td>
 						<% end %>
 					<% end %>
 				</tr>
@@ -82,20 +82,17 @@
 					<td><%= doctor.id %></td>
 					<% x=Appointment.where(doctor_id: doctor.id, patient_id: @patient.id) %>
 					<% if x.empty? %>
-						<td><%= link_to("Request", {:action => 'request_appointment', :id1 => user.id, :id2 => session[:user_id]}, :class => "back-link") %></td>	
+						<td><%= link_to("Request", {:action => 'request_appointment', :docid => user.id}, :class => "back-link") %></td>	
 					<% else %>
+						<% x=x.last %>
 						<% flag=1 %>
-						<% x.each do |xit| %>
-							<% if xit.status == 'pending' %>
-								<% flag=0 %>
-								<% break %>
-							<% end %>
+						<% if x.status == 'pending' %>
+							<% flag=0 %>
 						<% end %>
 						<% if flag==0 %>
-							<% x=x.first %>
 							<td><%= x.status %></td>
 						<% else %>
-							<td><%= link_to("Request", {:action => 'request_appointment', :id1 => user.id, :id2 => session[:user_id]}, :class => "back-link") %></td>
+							<td><%= link_to("Request", {:action => 'request_appointment', :docid => user.id}, :class => "back-link") %></td>
 						<% end %>
 					<% end %>
 					

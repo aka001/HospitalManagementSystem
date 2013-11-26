@@ -1,15 +1,11 @@
 <table>
 	<tr>
-		<th>Diagnostic Test</th>
-		<td><%= f.text_field(:diagnostictest) %></td>
+		<th>Prognosis</th>
+		<td><%= f.text_area(:prognosis,placeholder:"Prognosis") %></td>
 	</tr>
 	<tr>
 		<th>Problem</th>
 		<td><%= f.text_area(:problem) %></td>
-	</tr>
-	<tr>
-		<th>Prognosis</th>
-		<td><%= f.text_area(:prognosis) %></td>
 	</tr>
 	<tr>
 		<th></th>

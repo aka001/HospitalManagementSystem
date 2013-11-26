@@ -5,16 +5,12 @@
 	<ul>
 		<% if @flag1 == 1 %>
 			<%= render(:partial =>'/users/doctor_role') %>
-			<%@page_slug="doc"%>
 		<% elsif @flag2 == 1 %>
 			<%= render(:partial =>'/users/patient_role') %>
-			<%@page_slug="patient"%>
 		<% elsif @flag3 == 1 %>
 			<%= render(:partial => '/users/assistant_role') %>
-			<%@page_slug="ass"%>
 		<% elsif @flag4 == 1 %>
 			<%= render(:partial => '/users/admin_role') %>
-			<%@page_slug="admin"%>
 		<% end %>
 		<div class="page-header">
 		<h2>Notifications</h2>
@@ -24,7 +20,7 @@
 		<blockquote>
 		<%=t['notification']%>
 		<br/>
-		Click <a href="<%=t['links']%>">here</a> for additional info.<br/>
+		Click <a href="<%=raw t['links']%>">here</a> for additional info.<br/>
 		<small><%=t['created_at']%></small>
 		</blockquote>
 		<hr/>
