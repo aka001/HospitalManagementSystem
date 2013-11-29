@@ -1,5 +1,4 @@
 require 'json'
-require 'calendar_helper'
 
 class UsersController < ApplicationController
   #before_action :set_user, only: [:show, :edit, :update, :destroy]
@@ -140,6 +139,7 @@ class UsersController < ApplicationController
   
   def prescription_doctor
     @id=params[:id]
+    @prescription=Prescription.new
   end
   def prescription_form_doctor
     app_id=params[:id]

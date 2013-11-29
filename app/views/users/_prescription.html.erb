@@ -1,7 +1,7 @@
 <table>
 	<tr>
 		<th>Prognosis</th>
-		<td><%= f.text_area(:prognosis,placeholder:"Prognosis") %></td>
+		<td><%= f.text_area :prognosis,placeholder:"Prognosis" %></td>
 	</tr>
 	<tr>
 		<th>Problem</th>
@@ -20,8 +20,9 @@
 		<th>Diagnostic Result</th>
 		<td><%= f.text_field(:diagnostictest_result) %></td>
 	</tr>
-	<tr>
-		<th>Remark</th>
-		<td><%= f.text_area(:remark) %></td>
-	</tr>
+	<%print "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"%>
+	<%=f.fields_for :medicines do |m|%>
+	<%= render 'medicine_fields', :f => m%>
+	<%end%>
+	<%= link_to_add_association 'add task', f, :medicines%>
 </table>

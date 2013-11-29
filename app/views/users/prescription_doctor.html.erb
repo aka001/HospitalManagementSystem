@@ -1,7 +1,7 @@
 <h2>Prescription</h2>
 <%= link_to("<<Back to Menu", {:controller => 'access', :action => 'menu'}, :class => "back-link") %>
 <div id="name">
-  <%= form_for(:prescription, :url => {:action => 'prescription_form_doctor', :id => @id}) do |f| %>
+  <%= form_for(@prescription, :url => {:action => 'prescription_form_doctor', :id => @id}) do |f| %>
   	<%= render(:partial => 'prescription', :locals => {:f => f}) %>
   	<div class="form-buttons">
   		<%= submit_tag("Create Prescription")%>
