@@ -12,7 +12,7 @@
 </div>
 <%end%>
 
-<% if !(@app.empty?) %>
+<% if @app != nil %>
 
      <form action="show_appointment" method="get" class="form-horizontal">
 <div class="control-group">
@@ -62,16 +62,14 @@
 
 		<td><%= app['status']%></td>
 		<% if app['status']=='pending'%>
-			<td><%= link_to("Confirm", {:action => 'action_appointment_doctor', :id1 => "confirm",:app_id=>app.id} , :class => "btn btn-warning") %></td>
-			<td><%= link_to("Cancel", {:action => 'action_appointment_doctor', id1: "cancel", app_id:app.id}, :class => "btn btn-danger") %></td>
-		<% elsif app['status']=='confirm' %>
-			<%= app['id'] %>
+			<% app_id = app.id%>
+			<td><%= link_to("Confirm", {:action => 'action_appointment_doctor', :id1 => "confirm",:app_id=>app_id,:callit=>'show_appointment'} , :class => "btn btn-warning") %></td>
+			<td><%= link_to("Cancel", {:action => 'action_appointment_doctor', id1: "cancel", app_id:app_id,:callit=>'show_appointment'}, :class => "btn btn-danger") %></td>
+		<% elsif app['status']=='confirm'%>
+			<td><%= link_to("Prescription", {:action => 'prescription_doctor', :id => app['id']}, :class => "btn btn-primary") %></td>
+		<% elsif app['status']=='served'%>
+			<td><%= link_to("Show Prescription", {:action => 'show_prescription', :id => app['id']}, :class => 'btn btn-success')%></td>
 			<% testit=Prescription.where(:appointment_id => app['id'])%>
-			<% if testit.empty?%>
-				<td><%= link_to("Prescription", {:action => 'prescription_doctor', :id => app['id']}, :class => "btn btn-primary") %></td>
-			<% else %>
-				<td><%= link_to("Show Prescription", {:action => 'show_prescription', :id => app['id']}, :class => 'btn btn-success')%>
-			<% end %>
 		<% end %>
 	</tr>
 	<% end %>

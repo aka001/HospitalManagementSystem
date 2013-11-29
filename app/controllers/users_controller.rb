@@ -77,7 +77,7 @@ class UsersController < ApplicationController
   def show_appointment
     user=User.find(session[:user_id])
     if user.roles.first.name=='patient'
-      redirect_to appointment
+      redirect_to 'appointment'
     end
     @all=0
     if params[:submit]=='Filter'and params[:start]!="" and params[:end]!=""
@@ -108,9 +108,39 @@ class UsersController < ApplicationController
     @doc_id=@doc_id.id
     @app=Appointment.where(doctor_id: @doc_id)
   end
+  def history_appointment_patient
+    @default=0
+    @patient=User.find(session[:user_id]).patients.first
+    @app=Appointment.where(patient_id: @patient.id)
+    @all=0
+    if params[:submit]=='Filter'and params[:start]!="" and params[:end]!=""
+    @start=DateTime.parse(params[:start].to_datetime.to_s(:db))
+    @end=DateTime.parse(params[:end].to_datetime.to_s(:db))
+    @startinit=DateTime.parse(params[:start].to_datetime.to_s(:db))
+    @endinit=DateTime.parse(params[:end].to_datetime.to_s(:db))
+    elsif params[:submit]=='This month'
+    @startinit=DateTime.parse(DateTime.now.beginning_of_month().to_s(:db))
+    @endinit=DateTime.parse(DateTime.now.end_of_month().to_s(:db))
+    @start=DateTime.parse(DateTime.now.beginning_of_month().to_s(:db))
+    @end=DateTime.parse(DateTime.now.end_of_month().to_s(:db))
+    elsif params[:submit]=='All'
+      @all=1
+      @startinit=nil
+      @endinit=nil
+      @start=DateTime.parse(DateTime.now.beginning_of_day().to_s(:db))
+      @end=DateTime.parse(DateTime.now.end_of_day().to_s(:db))
+    else
+      @start=DateTime.parse(DateTime.now.beginning_of_day().to_s(:db))
+      @end=DateTime.parse(DateTime.now.end_of_day().to_s(:db))
+      @startinit=DateTime.parse(DateTime.now.beginning_of_day().to_s(:db))
+      @endinit=DateTime.parse(DateTime.now.end_of_day().to_s(:db))
+      @default=1
+    end
+  end
   def action_appointment_doctor
     stat=params[:id1]
     ap_id=params[:app_id]
+    callit=params[:callit]
     print stat, ap_id
     findit=Appointment.find(ap_id)
     findit.status=stat
@@ -125,16 +155,25 @@ class UsersController < ApplicationController
       str+=findit.status
       ActiveSupport::Notifications.instrument("appointment",user_id:Patient.find(findit.patient_id).users.first.id,links:"/users/appointment_favourite",type:findit.status,notification:str)
       flash[:notify]="Appointment with "+ Patient.find(findit.patient_id).name+" Confirmed"
-      redirect_to(:action => 'show_appointment')
+      #render(:action => 'show_appointment')
+      if callit=='appointment_patient_favourite'
+      redirect_to(:action => 'appointment_patient_favourite')
+      elsif callit=='history_appointment_favourite'
+        redirect_to(:action => 'history_appointment_patient')
+      elsif callit='show_appointment'
+        redirect_to(:action => 'show_appointment')
+      end
     else
       flash[:notify]="Oops! Something went wrong"
-      redirect_to(:action => 'show_appointment')
+      if callit=='appointment_patient_favourite'
+      redirect_to(:action => 'appointment_patient_favourite')
+      elsif callit=='history_appointment_favourite'
+        redirect_to(:action => 'history_appointment_patient')
+      end
     end
+    
+      #render(:action => 'show_appointment')
     #redirect_to(:action => 'show_appointment')
-  end
-  def hisory_appointment_doctor
-    @user_id=session[:user_id]
-    @app=Appointment.where(:doctor_id => @user_id)
   end
   
   def prescription_doctor
@@ -144,8 +183,11 @@ class UsersController < ApplicationController
   def prescription_form_doctor
     app_id=params[:id]
     attribute=params.require(:prescription).permit(:diagnostictest, :drugs, :diagnostictest_result, :remark)
-    prescription = Prescription.new(:appointment_id => app_id, :diagnostictest => attribute['diagnostictest'], :drugs => attribute['drugs'], :diagnostictest_result => attribute['diagnostictest_result'], :remark => attribute['remark'])
+    prescription = Prescription.new(:appointment_id => app_id, :diagnostictest => attribute['diagnostictest'], :drugs => attribute['drugs'], :diagnostictest_result => attribute['diagnostictest_result'], :remarks => attribute['remark'])
     if prescription.save
+      app=Appointment.find(app_id)
+      app.status="served"
+      app.save
       redirect_to(:action => 'show_appointment')
     else
       render('prescription_form_doctor')

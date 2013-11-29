@@ -23,4 +23,15 @@ class User < ActiveRecord::Base
       end
     end
   end
+  def self.status(stat)
+    if stat=="pending"
+      return "pending"
+    elsif stat=="confirm"
+      return "confirmed"
+    elsif stat=='cancel'
+      return "cancelled"
+    elsif stat=='served'
+      return "served"
+    end
+  end
 end

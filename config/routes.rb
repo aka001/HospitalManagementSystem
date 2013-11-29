@@ -29,7 +29,9 @@ Project::Application.routes.draw do
   get "users/advanced_search_perform_function"
   get "users/appointment_patient_favourite"
   get "users/favourite_doctor_list"
-    
+  
+  get "users/history_appointment_patient"
+  
   get "users/list_patient"
   #post "users/list_patient"
   get "users/show_patient"
