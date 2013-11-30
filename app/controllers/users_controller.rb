@@ -27,6 +27,19 @@ class UsersController < ApplicationController
 
   # POST /users
   # POST /users.json
+  def prescriptionpdf
+  	@p=Prescription.find(params[:pno])
+	respond_to do |format|
+		format.html
+		format.pdf do
+		pdf=PDF::Writer.new
+		pdf.text "test"
+			send_data pdf.render,:filename=>'greenprescription.pdf',:type=>'application/pdf',:disposition=>'inline'
+		end
+	end
+  end
+
+  	
   def create
     @user = User.new(user_params)
     

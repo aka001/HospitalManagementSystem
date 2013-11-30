@@ -1,5 +1,7 @@
 <p>Appointment Id: <%= @prescription.appointment_id %> </p>
-<p>Diagnostic Test: <%= @prescription.diagnostictest %></p>
-<p>Drugs Specified: <%= @prescription.drugs%></p>
+<p>Prognosis: <%= @prescription.prognosis %></p>
+<p>Medicines:</p> <% @prescription.medicines.each do |t|%>
+			<%=t.name%>
+			<%end%>
 <p>Diagnostic Result: <%= @prescription.diagnostictest_result%></p>
 <p>Remark: <%= @prescription.remarks %></p>
