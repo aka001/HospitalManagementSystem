@@ -9,10 +9,8 @@
 			<option value="<%=spec.name%>"><%=spec.name%></option>
 		<%end%>
 	</select>
-	<br />
-	<br />
 	<em>City:</em>
-	<select name="city" data-placeholder="Choose a City..." class="chosen-select" style="width:350px;" tabindex="2">
+	<select class="combobox input-large" name="city">
 		<option value=""></option>
 		<% @city.each do |city|%>
 			<option value="<%=city.name%>"><%=city.name%></option>

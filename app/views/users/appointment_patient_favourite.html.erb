@@ -12,7 +12,7 @@
 				<th>Date_of_birth</th>
 				<th>Address</th>
 				<th>Qualification</th>
-				<th>Status</th>
+				<th>Action</th>
 			</thead>
 				<% @fav.each do |fav| %>
 				<tr>
@@ -27,14 +27,15 @@
 					<td><%= doctor.date_of_birth %></td>
 					<td><%= doctor.address %></td>
 					<td><%= doctor.qualification %></td>
-					<td><%= doctor.id %></td>
 					<% x=Appointment.where(doctor_id: doctor.id, patient_id: @patient.id) %>
 					<% if x.empty? %>
 						<td><%= link_to("Request", {:action => 'request_appointment', :docid => user.id}, :class => "back-link") %></td>
 					<% else %>
 						<% x=x.last %>
+						<% if x.status == 'pending'%>
 						<td><%= User.status(x.status)%></td>
-						<% if x.status=='served' %>
+						<% end %>
+						<% if x.status=='served' || x.status=='cancel'%>
 							<td><%= link_to("Request", {:action => 'request_appointment', :docid => user.id}, :class => "back-link") %></td>
 						<% elsif x.status =='pending' %>
 							<%= temp=x.id%>
@@ -59,7 +60,7 @@
 				<th>Date_of_birth</th>
 				<th>Address</th>
 				<th>Qualification</th>
-				<th>Status</th>
+				<th>Action</th>
 			</thead>
 			
 				<% @doctors.each do |doctor| %>
@@ -74,14 +75,15 @@
 					<td><%= doctor.date_of_birth %></td>
 					<td><%= doctor.address %></td>
 					<td><%= doctor.qualification %></td>
-					<td><%= doctor.id %></td>
 					<% x=Appointment.where(doctor_id: doctor.id, patient_id: @patient.id) %>
 					<% if x.empty? %>
 						<td><%= link_to("Request", {:action => 'request_appointment', :docid => user.id}, :class => "back-link") %></td>	
 					<% else %>
 						<% x=x.last %>
+						<% if x.status == 'pending'%>
 						<td><%= User.status(x.status)%></td>
-						<% if x.status=='served' %>
+						<% end %>
+						<% if x.status=='served' || x.status=='cancel' %>
 							<td><%= link_to("Request", {:action => 'request_appointment', :docid => user.id}, :class => "back-link") %></td>
 						<% elsif x.status =='pending' %>
 							<%= temp=x.id%>

@@ -1,6 +1,21 @@
 <h2>Prescription</h2>
 <%=flash[:response]%>
 <%= link_to("<<Back to Menu", {:controller => 'access', :action => 'menu'}, :class => "back-link") %>
+<div class='pull-right'>
+	<h4>Earlier Prescriptions</h4>
+	<table>
+		<thead>
+			<th>Created At</th>
+			<th>Action</th>
+		</thead>
+		<% @prescript.each do |pres| %>
+			<tr>
+				<td><%= pres.created_at %></td>
+				<td><%= link_to("Show Prescription", {:action => 'show_prescription', :id => pres.appointment_id}, :class => 'btn btn-success')%></td>
+			</tr>
+		<% end %>
+	</table>
+</div>
 <div id="name">
   <%= form_for(@prescription, :url => {:action => 'prescription_form_doctor', :id => @id}) do |f| %>
   	<%= render(:partial => 'prescription', :locals => {:f => f}) %>
@@ -9,3 +24,5 @@
   	</div>
   <% end %>
 </div>
+
+

@@ -178,7 +178,13 @@ class UsersController < ApplicationController
   
   def prescription_doctor
     @id=params[:id]
-
+    @app=Appointment.find(@id)
+    @doc_id=@app.doctor_id
+    @pat_id=@app.patient_id
+    @app_search=Appointment.where(:doctor_id => @doc_id, :patient_id => @pat_id).select("id")
+    @app_search.map {|i| i.id }
+    print @app_search
+    @prescript=Prescription.where("appointment_id IN (?)",@app_search).order('created_at DESC')
     @prescription=Prescription.new
   end
   def prescription_form_doctor
