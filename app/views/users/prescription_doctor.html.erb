@@ -1,7 +1,15 @@
-<h2>Prescription</h2>
-<%=flash[:response]%>
 <%= link_to("<<Back to Menu", {:controller => 'access', :action => 'menu'}, :class => "back-link") %>
-<div class='pull-right'>
+<%=flash[:response]%>
+<h2>Prescription</h2>
+<div id="name">
+  <%= form_for(@prescription, :url => {:action => 'prescription_form_doctor', :id => @id}) do |f| %>
+  	<%= render(:partial => 'prescription', :locals => {:f => f}) %>
+  	<div class="form-buttons">
+  		<%= submit_tag("Done",class:"btn btn-default")%>
+  	</div>
+  <% end %>
+</div>
+<div>
 	<h4>Earlier Prescriptions</h4>
 	<table>
 		<thead>
@@ -15,14 +23,6 @@
 			</tr>
 		<% end %>
 	</table>
-</div>
-<div id="name">
-  <%= form_for(@prescription, :url => {:action => 'prescription_form_doctor', :id => @id}) do |f| %>
-  	<%= render(:partial => 'prescription', :locals => {:f => f}) %>
-  	<div class="form-buttons">
-  		<%= submit_tag("Create Prescription")%>
-  	</div>
-  <% end %>
 </div>
 
 

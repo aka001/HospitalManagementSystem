@@ -1,6 +1,6 @@
-<p class="fields">
-    <%= f.text_field :name%>
-    <%= f.text_field :quantity%>
-    <%= f.text_field :sigcode%>
+<div class="fields bs-example form-group" width="50%" >
+    <%= f.text_field :name,placeholder:"Name",class:"form-control"%>
+    <%= f.text_field :quantity,placeholder:"quantity (in mg)",maxlength:4,class:"form-control"%>
+    <%= f.text_field :sigcode,placeholder:"Sigcode",maxlength:5,class:"form-control"%>
     <%= link_to_remove_fields "remove", f %>
-</p>      
+</div>      

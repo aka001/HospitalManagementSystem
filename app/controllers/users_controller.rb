@@ -153,7 +153,8 @@ class UsersController < ApplicationController
       str+= dcname.to_s
       str+=' was '
       str+=findit.status
-      ActiveSupport::Notifications.instrument("appointment",user_id:Patient.find(findit.patient_id).users.first.id,links:"/users/appointment_favourite",type:findit.status,notification:str)
+      str+="ed"
+      ActiveSupport::Notifications.instrument("appointment",user_id:Patient.find(findit.patient_id).users.first.id,links:"/users/history_appointment_patient?end="+findit.dateit.to_s(:db)+"&start="+findit.dateit.to_s(:db)+"&submit=Filter",type:findit.status,notification:str)
       flash[:notify]="Appointment with "+ Patient.find(findit.patient_id).name+" Confirmed"
       #render(:action => 'show_appointment')
       if callit=='appointment_patient_favourite'
@@ -190,13 +191,16 @@ class UsersController < ApplicationController
   def prescription_form_doctor
     app_id=params[:id]
     app=Appointment.find(app_id)
-    app.status="served"
-    app.save
     attribute=params.require(:prescription).permit(:prognosis, :problem,medicines_attributes: [:name,:quantity,:sigcode,:_destroy])
     @prescription=Prescription.new(attribute)
     @prescription.appointment_id=app_id
 #prescription = Prescription.new(:appointment_id => app_id, :diagnostictest => attribute['diagnostictest'], :drugs => attribute['drugs'], :diagnostictest_result => attribute['diagnostictest_result'], :remark => attribute['remark'])
   if @prescription.save
+      app.status="served"
+      app.save
+      str='You were prescribed medicine by Dr.'
+      str+=User.find(session[:user_id]).doctors.name
+      ActiveSupport::Notifications.instrument("appointment",user_id:Patient.find(app.patient_id).users.first.id,links:"/users/history_appointment_patient?end="+app.dateit.to_s(:db)+"&start="+app.dateit.to_s(:db)+"&submit=Filter",type:app.status,notification:str)
     redirect_to(:action => 'show_appointment')
   else
     render('prescription_form_doctor')

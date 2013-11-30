@@ -1,14 +1,17 @@
-<table>
-	<tr>
-		<th>Prognosis</th>
-		<td><%= f.text_area :prognosis,placeholder:"Prognosis" %></td>
-	</tr>
-	<tr>
-		<th>Problem</th>
-		<td><%= f.text_area(:problem) %></td>
-	</tr>
+	
+<div class="form-group">
+<%= f.text_area :prognosis,placeholder:"Prognosis",class:"form-control"%>
+
+      <label >Medicines</label> 
+
 	<%=f.fields_for :medicines do |m|%>
 	<%= render 'medicine_fields', :f => m%>
 	<%end%>
 	<p><%= link_to_add_fields "Add Medicine", f, :medicines %></p>
-</table>
+</div>
+
+      <label >Tests</label> 
+	<%=f.fields_for :diags do |m|%>
+	<%= render 'diags', :f => m%>
+	<%end%>
+	<p><%= link_to_add_fields "Add Tests", f, :diags %></p>
