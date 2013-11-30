@@ -1,4 +1,5 @@
 <h2>Prescription</h2>
+<%=flash[:response]%>
 <%= link_to("<<Back to Menu", {:controller => 'access', :action => 'menu'}, :class => "back-link") %>
 <div id="name">
   <%= form_for(@prescription, :url => {:action => 'prescription_form_doctor', :id => @id}) do |f| %>

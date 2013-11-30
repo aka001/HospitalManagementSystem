@@ -1,24 +1,6 @@
-  <%= f.text_field :name%>
+<p class="fields">
+    <%= f.text_field :name%>
     <%= f.text_field :quantity%>
     <%= f.text_field :sigcode%>
-      <%= link_to_remove_association "remove medicine", f%>
-      <script>
-      $(function() {
-		         function check_to_hide_add_link() {
-			      if ($('#colours .nested-fields').length() == 5) {
-			             $('#colours .links a').hide();
-				          } else {
-					         $('#colours .links a').show();
-						      }
-						         }
-
-							    $('#colours').bind('cocoon:after-insert', function() {
-								         check_to_hide_or_show_add_link();
-									    });
-
-							       $('#colours').bind('cocoon:after-remove', function() {
-								            check_to_hide_or_show_add_link();
-									       });
-
-							          check_to_hide_or_show_add_link();     
-								   });</script>
+    <%= link_to_remove_fields "remove", f %>
+</p>      

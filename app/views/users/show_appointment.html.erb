@@ -60,7 +60,7 @@
 		<td><%= app['dateit']%></td>
 		<td><%= app['patient_id']%></td>
 
-		<td><%= app['status']%></td>
+		<td><%= User.status(app['status'])%></td>
 		<% if app['status']=='pending'%>
 			<% app_id = app.id%>
 			<td><%= link_to("Confirm", {:action => 'action_appointment_doctor', :id1 => "confirm",:app_id=>app_id,:callit=>'show_appointment'} , :class => "btn btn-warning") %></td>
@@ -75,6 +75,4 @@
 	<% end %>
 	<%end%>
 </table>
-<% else %>
-	<h2>No records Found</h2>
 <% end %>

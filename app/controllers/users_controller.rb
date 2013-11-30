@@ -178,21 +178,25 @@ class UsersController < ApplicationController
   
   def prescription_doctor
     @id=params[:id]
+
     @prescription=Prescription.new
   end
   def prescription_form_doctor
     app_id=params[:id]
-    attribute=params.require(:prescription).permit(:diagnostictest, :drugs, :diagnostictest_result, :remark)
-    prescription = Prescription.new(:appointment_id => app_id, :diagnostictest => attribute['diagnostictest'], :drugs => attribute['drugs'], :diagnostictest_result => attribute['diagnostictest_result'], :remarks => attribute['remark'])
-    if prescription.save
-      app=Appointment.find(app_id)
-      app.status="served"
-      app.save
-      redirect_to(:action => 'show_appointment')
-    else
-      render('prescription_form_doctor')
-    end
+    app=Appointment.find(app_id)
+    app.status="served"
+    app.save
+    attribute=params.require(:prescription).permit(:prognosis, :problem,medicines_attributes: [:name,:quantity,:sigcode,:_destroy])
+    @prescription=Prescription.new(attribute)
+    @prescription.appointment_id=app_id
+#prescription = Prescription.new(:appointment_id => app_id, :diagnostictest => attribute['diagnostictest'], :drugs => attribute['drugs'], :diagnostictest_result => attribute['diagnostictest_result'], :remark => attribute['remark'])
+  if @prescription.save
+    redirect_to(:action => 'show_appointment')
+  else
+    render('prescription_form_doctor')
   end
+  end
+
   def show_prescription
     appid=params[:id]
     @prescription=Prescription.where(:appointment_id => appid)

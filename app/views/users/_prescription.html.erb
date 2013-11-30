@@ -7,22 +7,8 @@
 		<th>Problem</th>
 		<td><%= f.text_area(:problem) %></td>
 	</tr>
-	<tr>
-		<th></th>
-		<td><%= #f.text_field(:drugs) 
-		%>
-		<textarea style="width: 300%" name="prognosis" placeholder="Medicines"></textarea>
-		
-		</td>
-	</tr>
-
-	<tr>
-		<th>Diagnostic Result</th>
-		<td><%= f.text_field(:diagnostictest_result) %></td>
-	</tr>
-	<%print "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"%>
 	<%=f.fields_for :medicines do |m|%>
 	<%= render 'medicine_fields', :f => m%>
 	<%end%>
-	<%= link_to_add_association 'add task', f, :medicines%>
+	<p><%= link_to_add_fields "Add Medicine", f, :medicines %></p>
 </table>
