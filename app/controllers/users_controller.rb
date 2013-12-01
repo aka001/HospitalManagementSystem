@@ -204,7 +204,7 @@ class UsersController < ApplicationController
   def prescription_form_doctor
     app_id=params[:id]
     app=Appointment.find(app_id)
-    attribute=params.require(:prescription).permit(:prognosis, :problem,medicines_attributes: [:name,:quantity,:sigcode,:_destroy])
+    attribute=params.require(:prescription).permit(:prognosis, :remarks, medicines_attributes: [:name,:quantity,:sigcode,:_destroy])
     @prescription=Prescription.new(attribute)
     @prescription.appointment_id=app_id
 #prescription = Prescription.new(:appointment_id => app_id, :diagnostictest => attribute['diagnostictest'], :drugs => attribute['drugs'], :diagnostictest_result => attribute['diagnostictest_result'], :remark => attribute['remark'])
@@ -224,6 +224,11 @@ class UsersController < ApplicationController
     appid=params[:id]
     @prescription=Prescription.where(:appointment_id => appid)
     @prescription=@prescription.first
+    @appointment=Appointment.find(appid)
+    @doctor=Doctor.find(@appointment.doctor_id)
+    @patient=Patient.find(@appointment.patient_id)
+    @medicine=@prescription.medicines
+    @diagnostic=@prescription.diags
   end
   @result=['hie']
   def search_doctor

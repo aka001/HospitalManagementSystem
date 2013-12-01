@@ -1,7 +1,51 @@
-<p>Appointment Id: <%= @prescription.appointment_id %> </p>
-<p>Prognosis: <%= @prescription.prognosis %></p>
-<p>Medicines:</p> <% @prescription.medicines.each do |t|%>
-			<%=t.name%>
-			<%end%>
-<p>Diagnostic Result: <%= @prescription.diagnostictest_result%></p>
-<p>Remark: <%= @prescription.remarks %></p>
+<link href="/assets/show_prescription.css" rel="stylesheet">
+<h4><b>Doctor Name: </b></h4>
+<p><%= @doctor.name %></p>
+<br />
+
+<h4><b>Patient Name:</h4></b>
+<p><%= @patient.name %></p>
+<h4><b>Patient Age:</h4></b>
+<p><%= @patient.age%></p>
+<br />
+
+<p><h4><b>Prognosis: </b></h4><%= @prescription.prognosis %></p>
+<h4><b>Medicines</b></h4>
+<% if @medicine.empty?%>
+	<p>No medicines to be prescribed</p>
+<% else %>
+	<table class="table table-hover">
+		<thead>
+			<th>Name</th>
+			<th>Sig Code</th>
+			<th>Quantity</th>
+		</thead>
+		<% @medicine.each do |med|%>
+			<tr>
+				<td>med.name</td>
+				<td>med.sigcode</td>
+				<td>med.quantity</td>
+			</tr>
+		<% end %>
+	</table>
+<% end %>
+<h4><b>Diagnostic Tests</b></h4>
+<% if @diagnostic.empty?%>
+	<p>No diagnostics specified</p>
+<% else %>
+	<table class="table table-hover">
+		<thead>
+			<th>Test</th>
+			<th>Comment</th>	
+		</thead>
+		<% @diagnostic.each do |diag|%>
+			<tr>
+				<td><%= diag.name %></td>
+				<td><%= diag.comments%>
+			</tr>
+		<% end %>
+	</table>
+<% end %>
+<br />
+<h4><b>Remark:</b></h4> 
+<p><%= @prescription.remarks %></p>

@@ -2,16 +2,17 @@
 <div class="form-group">
 <%= f.text_area :prognosis,placeholder:"Prognosis",class:"form-control"%>
 
-      <label >Medicines</label> 
+    <label >Medicines</label> 
 
 	<%=f.fields_for :medicines do |m|%>
-	<%= render 'medicine_fields', :f => m%>
+		<%= render 'medicine_fields', :f => m%>
 	<%end%>
 	<p><%= link_to_add_fields "Add Medicine", f, :medicines %></p>
 </div>
 
-      <label >Tests</label> 
+    <label >Tests</label> 
 	<%=f.fields_for :diags do |m|%>
 	<%= render 'diags', :f => m%>
 	<%end%>
 	<p><%= link_to_add_fields "Add Tests", f, :diags %></p>
+	<%= f.text_area :remarks ,placeholder:"Remarks", class:"form-control"%>
