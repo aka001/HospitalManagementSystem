@@ -7,20 +7,29 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.json
   def change_password_action
-     pass=params.require(:passwordit).permit(:old_password, :new_password)
-     print pass
-     user=User.find(session[:user_id])
+     pass=params.require(:passwordit).permit(:old_password, :new_password, :new_password_confirmation)
+     passit=pass['new_password']
+     print passit
+     userit=User.find(session[:user_id])
      saltit=User.hash_with_salt(pass['old_password'],'salt')
-     if saltit == user.password
-       user.password=saltit
-       user.save
-       flash[:message]="Password Changed Successfully"
-       redirect_to 'home'
-     else
-       flash[:message]="invalid password"
-       render(:action=>'change_password')
-     end
-   end
+     if pass[:new_password] == pass[:new_password_confirmation]
+      if saltit == userit.password
+         userit.password=User.hash_with_salt(passit,'salt')
+        if userit.save
+           flash[:message]="success"
+        else
+           flash[:message]="failure"
+        end
+        redirect_to(:controller => 'access', :action =>'change_password')
+      else
+         flash[:message]="failure"
+         redirect_to(:controller => 'access', :action=>'change_password')
+      end
+    else
+      flash[:message]="failure_password"
+      redirect_to(:controller => 'access', :action => 'change_password')
+    end
+  end
   def index
     @users = User.all
   end

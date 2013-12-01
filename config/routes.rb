@@ -59,6 +59,7 @@ Project::Application.routes.draw do
   post "access/change_password_action"
   get "access/change_password"
   #get "access/change_password_action"
+  post "users/change_password_action"
   
   resources :permissions
 

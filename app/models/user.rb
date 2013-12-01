@@ -3,6 +3,7 @@ class User < ActiveRecord::Base
   has_and_belongs_to_many :doctors
   has_and_belongs_to_many :assistants
   has_and_belongs_to_many :patients
+  #validates :new_password, confirmation:true
   def self.make_salt(username="")
     Digest::SHA1.hexdigest("Use #{username} with #{Time.now} to make salt")
   end

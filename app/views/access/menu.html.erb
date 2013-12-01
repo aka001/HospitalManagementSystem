@@ -1,5 +1,23 @@
-<% @page_title="Admin Menu"%>
-<% @page_slug="admin"%>
+<% if @role.name == 'admin'%>
+	<% @page_title="Admin Menu"%>
+	<% @page_slug="admin"%>
+	<% @page_lead="Welcome "+@user.name+"..."%>
+<% elsif @role.name=='patient'%>
+	<% @page_title="Patient Menu"%>
+	<% @page_slug="patient"%>
+	<% @page_lead="Welcome "+@user.patients.first.name+"..."%>
+<% elsif @role.name == 'doctor'%>
+	<% @page_title="Doctor Menu"%>
+	<% @page_slug="doctor"%>
+	<% @page_lead="Welcome "+@user.doctors.first.name+"..."%>
+<% elsif @role.name == 'assistant'%>
+	<% @page_title="Assistant Menu"%>
+	<% @page_slug="assistant"%>
+	<% @page_lead="Welcome "+@user.assistants.first.name+"..."%>
+<% else %>
+	<% @page_title="Green Software"%>
+	<% @page_slug="green"%>
+<% end %>
 <br/>
 <div>
 	<ul>
