@@ -4,7 +4,7 @@
 <div id="name">
   <h2>Create Doctor</h2>
   <%= form_for(:doctor, :url => {:action => 'update_doctor', :id => @users.id}) do |f| %>
-	<%= render(:partial => 'doctor', :locals => {:f => f}) %>
+	<%= render(:partial => 'editdoctor', :locals => {:f => f}) %>
 	<div class="form-buttons">
   		<%= submit_tag("Create Doctor")%>
   	</div>

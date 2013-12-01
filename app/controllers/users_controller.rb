@@ -100,12 +100,12 @@ class UsersController < ApplicationController
     app.doctor_id=params[:id1]
     app.patient_id=params[:id2]
     #app.dateit = DateTime.new(attribute["dateit(1i)"].to_i,attribute["dateit(2i)"].to_i,attribute["dateit(3i)"].to_i,attribute["dateit(4i)"].to_i,attribute["dateit(5i)"].to_i)
-    app.dateit=params[:dateit].to_datetime    
+    app.dateit=params[:dateit].to_datetime
     app.status='pending'
     if app.save
       str='You have a new pending request from '
       str+= Patient.find(params[:id2]).name
-    	ActiveSupport::Notifications.instrument("appointment",user_id:Doctor.find(params[:id1]).users.first.id,links:"/users/show_appointment?end="+params[:dateit].to_datetime.to_s(:db)+"&start="+params[:dateit].to_datetime.to_s(:db)+"&submit=Filter",type:"request",notification:str)
+    	ActiveSupport::Notifications.instrument("appointment",user_id:Doctor.find(params[:id1]).users.first.id,links:"/users/show_appointment?end="+params[:dateit].to_datetime.to_s()+"&start="+params[:dateit].to_datetime.to_s()+"&submit=Filter",type:"request",notification:str)
 	  redirect_to(:action => 'appointment_patient_favourite')
     else
    	redirect_to request_appointment(:id1 => idd1, :id2 => idd2)
@@ -118,26 +118,26 @@ class UsersController < ApplicationController
     end
     @all=0
     if params[:submit]=='Filter'and params[:start]!="" and params[:end]!=""
-    @start=DateTime.parse(params[:start].to_datetime.to_s(:db))
-    @end=DateTime.parse(params[:end].to_datetime.to_s(:db))
-    @startinit=DateTime.parse(params[:start].to_datetime.to_s(:db))
-    @endinit=DateTime.parse(params[:end].to_datetime.to_s(:db))
+    @start=DateTime.parse(params[:start].to_datetime.to_s())
+    @end=DateTime.parse(params[:end].to_datetime.to_s())
+    @startinit=DateTime.parse(params[:start].to_datetime.to_s())
+    @endinit=DateTime.parse(params[:end].to_datetime.to_s())
     elsif params[:submit]=='This month'
-    @startinit=DateTime.parse(DateTime.now.beginning_of_month().to_s(:db))
-    @endinit=DateTime.parse(DateTime.now.end_of_month().to_s(:db))
-    @start=DateTime.parse(DateTime.now.beginning_of_month().to_s(:db))
-    @end=DateTime.parse(DateTime.now.end_of_month().to_s(:db))
+    @startinit=DateTime.parse(DateTime.now.beginning_of_month().to_s())
+    @endinit=DateTime.parse(DateTime.now.end_of_month().to_s())
+    @start=DateTime.parse(DateTime.now.beginning_of_month().to_s())
+    @end=DateTime.parse(DateTime.now.end_of_month().to_s())
     elsif params[:submit]=='All'
       @all=1
       @startinit=nil
       @endinit=nil
-      @start=DateTime.parse(DateTime.now.beginning_of_day().to_s(:db))
-      @end=DateTime.parse(DateTime.now.end_of_day().to_s(:db))
+      @start=DateTime.parse(DateTime.now.beginning_of_day().to_s())
+      @end=DateTime.parse(DateTime.now.end_of_day().to_s())
     else
-    @start=DateTime.parse(DateTime.now.beginning_of_day().to_s(:db))
-    @end=DateTime.parse(DateTime.now.end_of_day().to_s(:db))
-    @startinit=DateTime.parse(DateTime.now.beginning_of_day().to_s(:db))
-    @endinit=DateTime.parse(DateTime.now.end_of_day().to_s(:db))
+    @start=DateTime.parse(DateTime.now.beginning_of_day().to_s())
+    @end=DateTime.parse(DateTime.now.end_of_day().to_s())
+    @startinit=DateTime.parse(DateTime.now.beginning_of_day().to_s())
+    @endinit=DateTime.parse(DateTime.now.end_of_day().to_s())
     end
     use=session[:user_id]
     @user=User.find(use)
@@ -228,7 +228,7 @@ class UsersController < ApplicationController
   def prescription_form_doctor
     app_id=params[:id]
     app=Appointment.find(app_id)
-    attribute=params.require(:prescription).permit(:prognosis, :remarks, medicines_attributes: [:name,:quantity,:sigcode,:_destroy])
+    attribute=params.require(:prescription).permit(:prognosis, :remarks, medicines_attributes: [:name,:quantity,:sigcode,:_destroy],diags_attributes:[:name,:comments])
     @prescription=Prescription.new(attribute)
     @prescription.appointment_id=app_id
 #prescription = Prescription.new(:appointment_id => app_id, :diagnostictest => attribute['diagnostictest'], :drugs => attribute['drugs'], :diagnostictest_result => attribute['diagnostictest_result'], :remark => attribute['remark'])

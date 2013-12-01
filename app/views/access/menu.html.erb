@@ -23,7 +23,7 @@
 	<ul>
 		<%= link_to("Change Password", {:controller => 'access', :action => 'change_password'}, :class => "btn btn-primary") %>
 		<div class="page-header">
-		<h2>Notifications</h2>
+		<h2>Dashboard</h2>
 		</div>
 		<%n=Notification.where(:user_id=>session[:user_id]).order("created_at DESC")%>
 		<%n.each do |t|%>

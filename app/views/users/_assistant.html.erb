@@ -1,42 +1,43 @@
 <table>
 	<tr>
 		<th>Username</th>
-		<td><%= f.text_field(:username) %></td>
+		<%val = ""; 8.times{val  << (65 + rand(25)).chr}%>
+		<td><%= f.text_field(:username,class:"form-control",value:val,required:'') %></td>
 	</tr>
 	<tr>
 		<th>Password</th>
-		<td><%= f.text_field(:password) %></td>
+		<td><%= f.password_field(:password,class:"form-control",required:'') %></td>
 	</tr>
 	<tr>
 		<th>Name</th>
-		<td><%= f.text_field(:name) %></td>
+		<td><%= f.text_field(:name,class:"form-control",required:'') %></td>
 	</tr>
 	<tr>
 		<th>Gender</th>
-		<td><%= f.text_field(:gender) %></td>
+		<td><%= f.select(:gender,['M','F'],class:"form-control") %></td>
 	</tr>
 	<tr>
 		<th>Date of Birth</th>
-		<td><%= f.text_field(:date_of_birth) %></td>
+		<td><%= f.datetime_select(:date_of_birth,class:"form-control",start_year:1935) %></td>
 	</tr>
 	<tr>
 		<th>Address</th>
-		<td><%= f.text_field(:permanent_address) %></td>
+		<td><%= f.text_area(:permanent_address,class:"form-control") %></td>
 	</tr>
 	<tr>
 		<th>Email</th>
-		<td><%= f.text_field(:email) %></td>
+		<td><%= f.text_field(:email,class:"form-control") %></td>
 	</tr>
 	<tr>
 		<th>Education</th>
-		<td><%= f.text_field(:education) %></td>
+		<td><%= f.text_field(:education,class:"form-control") %></td>
 	</tr>
 	<tr>
 		<th>Biodata</th>
-		<td><%= f.text_field(:biodata) %></td>
+		<td><%= f.text_field(:biodata,class:"form-control") %></td>
 	</tr>
 	<tr>
 		<th>Salary</th>
-		<td><%= f.text_field(:salary) %></td>
+		<td><%= f.text_field(:salary,class:"form-control") %></td>
 	</tr>
 </table>
