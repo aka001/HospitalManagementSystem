@@ -1,17 +1,14 @@
-<%= link_to("<<Back to lists", {:action => 'list_assistant'}, :class => "back-link") %>
 <br/>
-<%= link_to("Create Assistant", {:action => 'new_assistant'}, :class => "back-link") %>
+<%= link_to("Create Assistant", {:action => 'new_assistant'}, :class => "btn btn-primary") %>
+<br/><br/>
 <div>
 	<% if !(@assistants.empty?) %>
-		<table>
+		<table class="table table-hover">
 			<thead>
 				<th>Username</th>
 				<th>Name</th>
-				<th>Gender</th>
-				<th>Date_of_birth</th>
-				<th>Permanent Address</th>
 				<th>Email</th>
-				<th>Education</th>
+				<th>Action</th>
 			</thead>
 			
 				<% @assistants.each do |assistant| %>
@@ -19,16 +16,13 @@
 					<% user=assistant.users.first %>
 					<td><%= user.username%></td>
 					<td><%= assistant.name %></td>
-					<td><%= assistant.gender %></td>
-					<td><%= assistant.date_of_birth %></td>
-					<td><%= assistant.permanent_address %></td>
 					<td><%= assistant.email %></td>
-					<td><%= assistant.education%></td>
-					<td><%= user.id %></td>
-					<td><%= link_to("Show", {:action => 'show_assistant', :id => user.id}, :class => "back-link") %></td>
-					<td><%= link_to("Edit", {:action => 'edit_assistant', :id => user.id}, :class => "back-link") %></td>
-					<td><%= link_to("Delete", {:action => 'delete_assistant', :id => user.id }, :class => "back-link") %></td>
-				</tr>>
+					<td><%= link_to("Show", {:action => 'show_assistant', :id => user.id}, :class => "btn btn-success	") %></td>
+					<% if @role.name == 'admin'%>
+						<td><%= link_to("Edit", {:action => 'edit_assistant', :id => user.id}, :class => "btn btn-warning") %></td>
+						<td><%= link_to("Delete", {:action => 'delete_assistant', :id => user.id }, :class => "btn btn-danger") %></td>
+					<% end %>
+				</tr>
 				<% end %>
 		</table>
 	<% else %>

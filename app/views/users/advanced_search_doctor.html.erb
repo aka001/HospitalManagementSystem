@@ -20,15 +20,13 @@
 	<input type="submit" value="submit">
 </form>
 <% if @doctors != nil %>
-		<table>
+		<table class="table table-striped">
 			<thead>
 				<th>Username</th>
 				<th>Name</th>
-				<th>Gender</th>
-				<th>Date_of_birth</th>
-				<th>Address</th>
-				<th>Qualification</th>
+				<th>Contact Number</th>
 				<th>Status</th>
+				<th>Details</th>
 			</thead>
 			
 				<% @doctors.each do |doc| %>
@@ -40,17 +38,14 @@
 						<td><%= user.username%></td>
 					<% end %>
 					<td><%= doctor.name %></td>
-					<td><%= doctor.gender %></td>
-					<td><%= doctor.date_of_birth %></td>
-					<td><%= doctor.address %></td>
-					<td><%= doctor.qualification %></td>
-					<td><%= doctor.id %></td>
+					<td><%= doctor.contact_number %></td>
 					<% out = Favourite.where(:doctor_id => doctor.id, :patient_id => @patient.id) %>
 					<% if out.empty? %>
 						<td><%= link_to("Add to Favourites", {:action => 'favourite_action', :id => 1, :id1 => doctor.id, :redirect => 1}, :class => "back-link") %></td>
 					<% else %>
 						<td><%= link_to("Remove from Favourites", {:action => 'favourite_action', :id => 2, :id1 => doctor.id, :redirect => 1}, :class => "back-link") %></td>
 					<% end %>
+					<td><%= link_to("Show", {:action => 'show_doctor', :id => user.id}, :class => "btn btn-success") %></td>
 				</tr>
 				<% end %>
 		</table>

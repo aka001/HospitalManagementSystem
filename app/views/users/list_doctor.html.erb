@@ -1,16 +1,13 @@
-<%= link_to("<<Back to lists", {:action => 'list_doctor'}, :class => "back-link") %>
 <br/>
-<%= link_to("Create Doctor", {:action => 'new_doctor'}, :class => "back-link") %>
+<%= link_to("Create Doctor", {:action => 'new_doctor'}, :class => "btn btn-primary") %>
+<br/>
 <div>
 	<% if !(@doctors.empty?) %>
-		<table>
+		<table class="table table-hover">
 			<thead>
 				<th>Username</th>
 				<th>Name</th>
-				<th>Gender</th>
-				<th>Date_of_birth</th>
-				<th>Address</th>
-				<th>Qualification</th>
+				<th>Contact Number</th>
 				<th>Action</th>
 			</thead>
 			
@@ -22,15 +19,13 @@
 						<td><%= user.username%></td>
 					<% end %>
 					<td><%= doctor.name %></td>
-					<td><%= doctor.gender %></td>
-					<td><%= doctor.date_of_birth %></td>
-					<td><%= doctor.address %></td>
-					<td><%= doctor.qualification %></td>
-					<td><%= user.id %></td>
-					<td><%= link_to("Show", {:action => 'show_doctor', :id => user.id}, :class => "back-link") %></td>
-					<td><%= link_to("Edit", {:action => 'edit_doctor', :id => user.id}, :class => "back-link") %></td>
-					<td><%= link_to("Delete", {:action => 'delete_doctor', :id => user.id }, :class => "back-link") %></td>	
-				</tr>>
+					<td><%= doctor.contact_number%></td>
+					<td><%= link_to("Show", {:action => 'show_doctor', :id => user.id}, :class => "btn btn-success") %></td>
+					<% if @role.name == 'admin'%>
+						<td><%= link_to("Edit", {:action => 'edit_doctor', :id => user.id}, :class => "btn btn-warning") %></td>
+						<td><%= link_to("Delete", {:action => 'delete_doctor', :id => user.id }, :class => "btn btn-danger") %></td>
+					<% end %>
+				</tr>
 				<% end %>
 		</table>
 	<% else %>

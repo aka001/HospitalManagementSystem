@@ -8,6 +8,7 @@ class ApplicationController < ActionController::Base
       redirect_to(:controller => 'access', :action => 'login')
       return false
      else
+       @page_slug=User.find(session[:user_id]).roles.first.name
        return true
     end
   end

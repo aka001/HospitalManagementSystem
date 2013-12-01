@@ -1,4 +1,5 @@
-<%= link_to("<<Back to lists", {:action => 'list_doctor'}, :class => "back-link") %>
+<br>
+<%= link_to("<<Back to lists", {:action => 'list_doctor'}, :class => "btn btn-primary") %>
 <div id="name">
   <h2>Create Doctor</h2>
   <%= form_for(:doctor, :url => {:action => 'create_doctor'}) do |f| %>

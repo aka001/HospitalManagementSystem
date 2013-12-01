@@ -1,4 +1,6 @@
-<%= link_to("<<Back to lists", {:action => 'list_assistant'}, :class => "back-link") %>
+<br />
+<%= link_to("<<Back to lists", {:action => 'list_assistant'}, :class => "btn btn-primary") %>
+<br />
 <div class=Doctor>
 	<h2>Delete Assistant</h2>
 	<%= form_for(:assistant, :url => {:action => 'destroy_assistant', :id => @users.id}) do |f| %>

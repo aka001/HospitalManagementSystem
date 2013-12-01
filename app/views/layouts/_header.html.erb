@@ -1,12 +1,15 @@
 <%if session[:user_id]%>
-<%a=User.find(session[:user_id])%>
-<%d=a.doctors%>
-<%p=a.patients%>
-<% if p.empty?%>
-<%@page_slug="doc"%>
-<%else%>
-<%@page_slug="patient"%>
-<%end%>
+	<%a=User.find(session[:user_id])%>
+	<%find=a.roles.first.name%>
+	<% if find=="doctor" %>
+		<%@page_slug="doc"%>
+	<%elsif find=="patient"%>
+		<%@page_slug="patient"%>
+	<%elsif find=='admin'%>
+		<%@page_slug='admin'%>
+	<%elsif find=='assistant'%>
+		<%@page_slug='assistant'%>
+	<%end%>
 <%end%>
 
 <meta charset="utf-8">

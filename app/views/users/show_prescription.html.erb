@@ -1,16 +1,18 @@
-<link href="/assets/show_prescription.css" rel="stylesheet">
-<h4><b>Doctor Name: </b></h4>
-<p><%= @doctor.name %></p>
+<style>
+	.typo{display:inline;}
+</style>
+<br/><br/>
+<h4 class="typo"><b>Doctor Name: </b></h4>
+<%= @doctor.name %>
 <br />
-
-<h4><b>Patient Name:</h4></b>
-<p><%= @patient.name %></p>
-<h4><b>Patient Age:</h4></b>
-<p><%= @patient.age%></p>
+<br/>
+<h4 class="typo"><b>Patient Name:</h4></b> <%= @patient.name %>
 <br />
+<h4 class="typo"><b>Patient Age:</h4></b> <%= @patient.age%>
+<br /><br />
 
-<p><h4><b>Prognosis: </b></h4><%= @prescription.prognosis %></p>
-<h4><b>Medicines</b></h4>
+<h4 class="typo"><b>Prognosis: </b></h4> <%= @prescription.prognosis %></p>
+<h4 class="typo"><b>Medicines:</b></h4>
 <% if @medicine.empty?%>
 	<p>No medicines to be prescribed</p>
 <% else %>
@@ -22,14 +24,14 @@
 		</thead>
 		<% @medicine.each do |med|%>
 			<tr>
-				<td>med.name</td>
-				<td>med.sigcode</td>
-				<td>med.quantity</td>
+				<td><%=med.name%></td>
+				<td><%=med.sigcode%></td>
+				<td><%=med.quantity%></td>
 			</tr>
 		<% end %>
 	</table>
 <% end %>
-<h4><b>Diagnostic Tests</b></h4>
+<h4><b>Diagnostic Tests:</b></h4>
 <% if @diagnostic.empty?%>
 	<p>No diagnostics specified</p>
 <% else %>
@@ -49,3 +51,7 @@
 <br />
 <h4><b>Remark:</b></h4> 
 <p><%= @prescription.remarks %></p>
+<br/><br/><br/>
+<div class="pull-right">
+<h4 class="typo">Contact Number:</h4> <%= @doctor.contact_number%>
+</div>

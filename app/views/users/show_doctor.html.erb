@@ -1,9 +1,12 @@
-<%= link_to("<<BackToList", {:action => 'list_doctor'}, :class => "back-link") %>
+<br>
+<%= link_to("<<BackToList", {:action => 'list_doctor'}, :class => "btn btn-primary") %>
+<br><br>
 <p>Username: <%= @user.username %></p>
 <p>Name: <%= @doctor.name %></p>
 <p>Gender: <%= @doctor.gender %></p>
 <p>Date_of_birth: <%= @doctor.date_of_birth %></p>
 <p>Addres: <%= @doctor.address %></p>
+<p>Contact Number: <%= @doctor.contact_number%>
 <p>Qualification: <%= @doctor.qualification %></p>
 <p>Education: <%= @doctor.education %></p>
 <p>Specialised Fields: <%= @doctor.specialised_fields %></p>

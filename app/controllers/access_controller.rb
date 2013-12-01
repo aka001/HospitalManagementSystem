@@ -1,6 +1,5 @@
 class AccessController < ApplicationController
-  before_filter :confirm_logged_in, :except => [:login, :attempt_login]
-  
+  before_filter :confirm_logged_in, :except => [:login, :attempt_login]  
   def index
     render('menu')
   end
@@ -18,6 +17,10 @@ class AccessController < ApplicationController
    elsif @role.name == 'admin'
      @flag4=1
    end
+   def change_password
+     
+   end
+   
    # @role.each do |role|
       # if !(role.permissions.where(:name => 'create_doctor').empty?)
         # @flag1=1

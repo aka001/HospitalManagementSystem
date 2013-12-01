@@ -56,6 +56,10 @@ Project::Application.routes.draw do
   post "users/prescription_form_doctor"
   get "users/show_prescription"
   
+  post "access/change_password_action"
+  get "access/change_password"
+  #get "access/change_password_action"
+  
   resources :permissions
 
   resources :roles

@@ -8,11 +8,10 @@
 			<thead>
 				<th>Username</th>
 				<th>Name</th>
-				<th>Gender</th>
-				<th>Date_of_birth</th>
-				<th>Address</th>
-				<th>Qualification</th>
+				<th>Contact Number</th>
+				<th>Status</th>
 				<th>Action</th>
+				<th>Details</th>
 			</thead>
 				<% @fav.each do |fav| %>
 				<tr>
@@ -23,16 +22,14 @@
 						<td><%= user.username%></td>
 					<% end %>
 					<td><%= doctor.name %></td>
-					<td><%= doctor.gender %></td>
-					<td><%= doctor.date_of_birth %></td>
-					<td><%= doctor.address %></td>
-					<td><%= doctor.qualification %></td>
+					<td><%= doctor.contact_number%></td>
 					<% x=Appointment.where(doctor_id: doctor.id, patient_id: @patient.id) %>
 					<% if x.empty? %>
+						<td>---</td>
 						<td><%= link_to("Request", {:action => 'request_appointment', :docid => user.id}, :class => "back-link") %></td>
 					<% else %>
 						<% x=x.last %>
-						<% if x.status == 'pending'%>
+						<% if x.status == 'pending' || x.status == 'confirm'%>
 						<td><%= User.status(x.status)%></td>
 						<% end %>
 						<% if x.status=='served' || x.status=='cancel'%>
@@ -40,8 +37,11 @@
 						<% elsif x.status =='pending' %>
 							<%= temp=x.id%>
 							<td><%= link_to("Cancel", {:action => 'action_appointment_doctor', id1: "cancel", app_id:temp, callit:"appointment_patient_favourite"}, :class => "btn btn-danger") %></td>
+						<% else %>
+							<td>---</td>
 						<% end %>
 					<% end %>
+					<td><%= link_to("Show", {:action => 'show_doctor', :id => user.id}, :class => "btn btn-success") %></td>
 				</tr>
 				<% end %>
 		</table>
@@ -56,11 +56,10 @@
 			<thead>
 				<th>Username</th>
 				<th>Name</th>
-				<th>Gender</th>
-				<th>Date_of_birth</th>
-				<th>Address</th>
-				<th>Qualification</th>
+				<th>Contact Number</th>
+				<th>Status</th>
 				<th>Action</th>
+				<th>Details</th>
 			</thead>
 			
 				<% @doctors.each do |doctor| %>
@@ -71,16 +70,14 @@
 						<td><%= user.username%></td>
 					<% end %>
 					<td><%= doctor.name %></td>
-					<td><%= doctor.gender %></td>
-					<td><%= doctor.date_of_birth %></td>
-					<td><%= doctor.address %></td>
-					<td><%= doctor.qualification %></td>
+					<td><%= doctor.contact_number%></td>
 					<% x=Appointment.where(doctor_id: doctor.id, patient_id: @patient.id) %>
 					<% if x.empty? %>
+						<td>---</td>
 						<td><%= link_to("Request", {:action => 'request_appointment', :docid => user.id}, :class => "back-link") %></td>	
 					<% else %>
 						<% x=x.last %>
-						<% if x.status == 'pending'%>
+						<% if x.status == 'pending' || x.status == 'confirm'%>
 						<td><%= User.status(x.status)%></td>
 						<% end %>
 						<% if x.status=='served' || x.status=='cancel' %>
@@ -88,9 +85,11 @@
 						<% elsif x.status =='pending' %>
 							<%= temp=x.id%>
 							<td><%= link_to("Cancel", {:action => 'action_appointment_doctor', id1: "cancel", app_id:temp, callit:"appointment_patient_favourite"}, :class => "btn btn-danger") %></td>
+						<% else %>
+							<td>---</td>
 						<% end %>
 					<% end %>
-					
+					<td><%= link_to("Show", {:action => 'show_doctor', :id => user.id}, :class => "btn btn-success") %></td>
 				</tr>
 				<% end %>
 		</table>

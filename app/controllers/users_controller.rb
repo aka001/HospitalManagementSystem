@@ -6,6 +6,21 @@ class UsersController < ApplicationController
 
   # GET /users
   # GET /users.json
+  def change_password_action
+     pass=params.require(:passwordit).permit(:old_password, :new_password)
+     print pass
+     user=User.find(session[:user_id])
+     saltit=User.hash_with_salt(pass['old_password'],'salt')
+     if saltit == user.password
+       user.password=saltit
+       user.save
+       flash[:message]="Password Changed Successfully"
+       redirect_to 'home'
+     else
+       flash[:message]="invalid password"
+       render(:action=>'change_password')
+     end
+   end
   def index
     @users = User.all
   end
@@ -313,6 +328,7 @@ class UsersController < ApplicationController
   end
   def list_doctor
     @doctors=Doctor.all
+    @role=User.find(session[:user_id]).roles.first
   end
   def show_doctor
     @user=User.find(params[:id])
@@ -347,6 +363,7 @@ class UsersController < ApplicationController
   end
   def delete_doctor
     @users=User.find(params[:id])
+    @doctor=@users.doctors.first
   end
   def destroy_doctor
     @users=User.find(params[:id])
@@ -367,6 +384,7 @@ class UsersController < ApplicationController
   end
   def list_assistant
     @assistants=Assistant.all
+    @role=User.find(session[:user_id]).roles.first
   end
   def show_assistant
     @user=User.find(params[:id])
@@ -419,6 +437,7 @@ class UsersController < ApplicationController
   end
   def list_patient
     @patients=Patient.all
+    @role=User.find(session[:user_id]).roles.first
   end
   def show_patient
     @user=User.find(params[:id])
