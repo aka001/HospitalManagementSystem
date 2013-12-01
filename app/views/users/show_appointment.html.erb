@@ -59,7 +59,7 @@
 		<% patient=Patient.find(patid) %>
 		<% user=patient.users.first %>
 		<td><%= patient.name%></td>
-		<td><%= app['dateit']%></td>
+		<td><%= app['dateit'].to_formatted_s(:long)%></td>
 		<td><%= User.status(app['status'])%></td>
 		<% if app['status']=='pending'%>
 			<% app_id = app.id%>

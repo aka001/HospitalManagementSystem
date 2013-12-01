@@ -41,6 +41,10 @@
 	</tr>
 	<tr>
 		<th>Salary</th>
-		<td><%= f.text_field(:salary) %></td>
+		<td><%= f.text_field(:salary,maxlength:9) %></td>
+	</tr>
+	<tr>
+		<th>Contact No.</th>
+		<td><%= f.text_field(:salary,maxlength:11) %></td>
 	</tr>
 </table>
