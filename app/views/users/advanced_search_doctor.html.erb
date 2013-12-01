@@ -2,14 +2,14 @@
 <form action="advanced_search_perform_function" method="get">
 	<em>Name: </em><input type="text" name="name"><br>
 	<div class="side-by-side clearfix">
-	<em>Specialisation:</em>
-	<select class="combobox input-large" name="spec">
+	<span>Specialisation:</span>
+	<select class="combobox" class="spec" name="spec">
 		<option value=""></option>
 		<% @spec.each do |spec|%>
 			<option value="<%=spec.name%>"><%=spec.name%></option>
 		<%end%>
 	</select>
-	<em>City:</em>
+	<div style="display: inline;">City:</div>
 	<select class="combobox input-large" name="city">
 		<option value=""></option>
 		<% @city.each do |city|%>

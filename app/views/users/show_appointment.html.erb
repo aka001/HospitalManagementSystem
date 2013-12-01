@@ -57,7 +57,7 @@
 	<tr>
 		<% patid=app.patient_id %>
 		<% patient=Patient.find(patid) %>
-		<% user=patient.users.first.inspect %>
+		<% user=patient.users.first %>
 		<td><%= patient.name%></td>
 		<td><%= app['dateit']%></td>
 		<td><%= User.status(app['status'])%></td>
@@ -73,7 +73,8 @@
 		<% else %>
 			<td> --- </td>
 		<% end %>
-		<td><%= link_to("Show", {:action => 'show_patient', :id => user['id']}, :class => "btn btn-success") %></td>
+		<% x=user.id%>
+		<td><%= link_to("Show", {:action => 'show_patient', :id => x}, :class => "btn btn-success") %></td>
 	</tr>
 	<% end %>
 	<%end%>

@@ -1,7 +1,7 @@
 <% if @role.name == 'admin'%>
 	<% @page_title="Admin Menu"%>
 	<% @page_slug="admin"%>
-	<% @page_lead="Welcome "+@user.name+"..."%>
+	<% @page_lead="Welcome "+@user.username+"..."%>
 <% elsif @role.name=='patient'%>
 	<% @page_title="Patient Menu"%>
 	<% @page_slug="patient"%>
