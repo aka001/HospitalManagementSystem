@@ -334,6 +334,7 @@ class UsersController < ApplicationController
     @fav=Favourite.where(:patient_id => @patient.id)
   end
   def new_doctor 
+  @user=User.new
   end
   def list_doctor
     @doctors=Doctor.all
@@ -346,9 +347,7 @@ class UsersController < ApplicationController
   def create_doctor
     attribute=params.require(:doctor).permit(:username, :password, :name, :gender, :date_of_birth, :address, :qualification, :experience_years, :specialised_fields,:salary)
     user=User.new(:username => attribute['username'], :password => User.hash_with_salt(attribute[:password], 'salt'))
-    doctor= Doctor.new(:name => attribute['name'], :gender => attribute['gender'], :date_of_birth => attribute['date_of_birth'], :address => attribute['address'],
-                    :qualification => attribute['qualification'], :experience_years => attribute['experience_years'], :specialised_fields => attribute['specialised_fields'],
-                    :salary => attribute['salary'])
+    doctor= Doctor.new(:name => attribute['name'], :gender => attribute['gender'], :date_of_birth => attribute['date_of_birth'], :address => attribute['address'],:qualification => attribute['qualification'], :experience_years => attribute['experience_years'], :specialised_fields => attribute['specialised_fields'],:salary => attribute['salary'])
     if user.save && doctor.save
       user.doctors << doctor
       puts user.doctors

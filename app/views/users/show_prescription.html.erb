@@ -1,6 +1,11 @@
+<%if params[:type]%>
+	<%@pdfpage=1%>
+	<%end%>
+
 <style>
 	.typo{display:inline;}
 </style>
+<h3>Green Software
 <br/><br/>
 <h4 class="typo"><b>Doctor Name: </b></h4>
 <%= @doctor.name %>
@@ -52,6 +57,9 @@
 <h4><b>Remark:</b></h4> 
 <p><%= @prescription.remarks %></p>
 <br/><br/><br/>
-<div class="pull-right">
+<div style="float:right">
 <h4 class="typo">Contact Number:</h4> <%= @doctor.contact_number%>
 </div>
+<%if params[:type].nil?%>
+<%=link_to "Generate Pdf","show_prescription.pdf?id="+params[:id]+"&type=pdf"%>
+<%end%>

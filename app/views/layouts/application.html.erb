@@ -1,15 +1,17 @@
 <!DOCTYPE html>
+<%if @pdfpage.nil?%>
 <html lang="en">
+
   <head>
     <%=render :partial=> 'layouts/header' %>
   </head>
-  <body>
+  <body >
     <a class="sr-only" href="#content">Skip to main content</a>
 
     <!-- Docs master nav -->
     <%=render :partial=> 'layouts/navmain' %>
     <!-- Docs page layout -->    
-    <div class="bs-header" id="content">
+    <div class="bs-header hidden-print" id="content">
       <div class="container">
         <h1><%=@page_title %></h1>
         <p><%=@page_lead %></p>
@@ -20,7 +22,7 @@
     <!-- Callout for the old docs link -->
     <%=render :partial=> 'layouts/oldbsdocs' %>
 
-    <div class="container bs-docs-container">
+    <div class="container bs-docs-container hidden-print">
       <div class="row">
         <div class="col-md-3">
           <div class="bs-sidebar hidden-print" role="complementary">
@@ -48,6 +50,7 @@
 
     <!-- Footer
     ================================================== -->
+    
     <footer class="bs-footer" role="contentinfo">
       <div class="container">
         <%=render :partial=> 'layouts/socialbuttons' %>
@@ -63,3 +66,6 @@
 
   </body>
 </html>
+<%else%>
+<%=yield%>
+<%end%>
