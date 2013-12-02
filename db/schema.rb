@@ -237,6 +237,7 @@ ActiveRecord::Schema.define(version: 20131201032400) do
 
   create_table "sigcodes", force: true do |t|
     t.string   "name"
+    t.string   "meaning"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
