@@ -3,9 +3,9 @@
 <div id="name">
   <h2>Create Assistant</h2>
   <%= form_for(:assistant, :url => {:action => 'update_assistant', :id => @users.id}) do |f| %>
-	<%= render(:partial => 'assistant', :locals => {:f => f}) %>
+	<%= render(:partial => 'editassistant', :locals => {:f => f}) %>
 	<div class="form-buttons">
-  		<%= submit_tag("Create Assistant")%>
+  		<%= submit_tag("Update")%>
   	</div>
   <% end %>
 </div>

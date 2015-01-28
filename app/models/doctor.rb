@@ -19,43 +19,42 @@ class Doctor < ActiveRecord::Base
     end  
   end
   def self.advanced_search(name, spec, city)
-    print "location pin-pointed"
-    puts name==nil
-    puts
-    print spec
-    print city
+    puts name.nil?
+    puts spec.nil?
+    puts city.nil?
     if name.nil? && spec.nil? && city.nil?
       print "here"
       return scoped
-    elsif name=='nil'
-      if spec=='nil'
-        x='%'+city+'%'
-        return Doctor.where(['country LIKE ?', x])
-      elsif city=='nil'
-         x='%'+spec+'%'
-         return Doctor.where(['specialised_fields LIKE ?'], x)
-      else
-        return where('country LIKE :cityit and specialised_fields LIKE :specit', cityit:"%#{spec}%", specit:"%#{spec}%")
-      end
-    elsif spec=='nil'
-      if name=='nil'
+    elsif name.nil?
+      if spec.nil?
         x='%'+city+'%'
         return where(['country LIKE ?', x])
-      elsif city=='nil'
+      elsif city.nil?
+         x='%'+spec+'%'
+         return where(['specialised_fields LIKE ?', x])
+      else
+        puts "here"
+        return where('country LIKE :cityit and specialised_fields LIKE :specit', cityit:"%#{city}%", specit:"%#{spec}%")
+      end
+    elsif spec.nil?
+      if name.nil?
+        x='%'+city+'%'
+        return where(['country LIKE ?', x])
+      elsif city.nil?
          print "here1"
          x='%'+name+'%'
          puts x
-         return where(['name LIKE ?'], x)
+         return where(['name LIKE ?', x])
       else
         return where('name LIKE :nameit and country LIKE :cityit', nameit:"%#{name}%", cityit:"%#{city}%")
       end
-    elsif city=='nil'
-      if name=='nil'
+    elsif city.nil?
+      if name.nil?
         x='%'+spec+'%'
         return where([' LIKE ?', x])
-      elsif spec=='nil'
+      elsif spec.nil?
          x='%'+name+'%'
-         return where(['name LIKE ?'], x)
+         return where(['name LIKE ?', x])
       else
         return where('name LIKE :nameit and specialised_fields LIKE :specit', nameit:"%#{name}%", specit:"%#{spec}%")
       end

@@ -1,0 +1,22 @@
+use experiment;
+insert into specialisations(id,name) values
+(1,'General Physician'),
+(2,'Gynecologist'),
+(3,'Pediatrician'),
+(4,'Ophthalmologist'),
+(5,'Dermatologist'),
+(6,'ENT doctor'),
+(7,'Orthopedic'),
+(8,'Cardiologist'),
+(9,'Neurologist'),
+(10,'Dentist'),
+(11,'Urologist'),
+(12,'Psychiatrist'),
+(13,'Pathologist'),
+(14,'Radiologist'),
+(15,'Anesthesiologist'),
+(16,'General Surgeon'),
+(17,'Oncologist'),
+(18,'Nephrologist'),
+(19,'Endocrinologist'),
+(20,'Gastrologist');

@@ -29,13 +29,15 @@
 						<td><%= link_to("Request", {:action => 'request_appointment', :docid => user.id}, :class => "back-link") %></td>
 					<% else %>
 						<% x=x.last %>
+						
 						<% if x.status == 'pending' || x.status == 'confirm'%>
-						<td><%= User.status(x.status)%></td>
+						<td><%= User.status(x.status)%> to be on  <br/><%=x.dateit.to_formatted_s(:long)%></td>
 						<% end %>
 						<% if x.status=='served' || x.status=='cancel'%>
+							<td>---</td>
 							<td><%= link_to("Request", {:action => 'request_appointment', :docid => user.id}, :class => "back-link") %></td>
 						<% elsif x.status =='pending' %>
-							<%= temp=x.id%>
+							<% temp=x.id%>
 							<td><%= link_to("Cancel", {:action => 'action_appointment_doctor', id1: "cancel", app_id:temp, callit:"appointment_patient_favourite"}, :class => "btn btn-danger") %></td>
 						<% else %>
 							<td>---</td>
@@ -78,12 +80,13 @@
 					<% else %>
 						<% x=x.last %>
 						<% if x.status == 'pending' || x.status == 'confirm'%>
-						<td><%= User.status(x.status)%></td>
+						<td><%= User.status(x.status)%> to be on  <br/><%=x.dateit.to_formatted_s(:long)%></td>
 						<% end %>
 						<% if x.status=='served' || x.status=='cancel' %>
+							<td>---</td>
 							<td><%= link_to("Request", {:action => 'request_appointment', :docid => user.id}, :class => "back-link") %></td>
 						<% elsif x.status =='pending' %>
-							<%= temp=x.id%>
+							<% temp=x.id%>
 							<td><%= link_to("Cancel", {:action => 'action_appointment_doctor', id1: "cancel", app_id:temp, callit:"appointment_patient_favourite"}, :class => "btn btn-danger") %></td>
 						<% else %>
 							<td>---</td>

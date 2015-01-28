@@ -1,6 +1,11 @@
-<div class="fields">
-    <hr/>
-    <%= f.text_field :name,placeholder:"Name"%>
-    <%= f.text_area :comments,placeholder:"Comments"%>
+<div class="fields form-inline">
+    <div class="form-group">
+    <%= f.text_field :name,placeholder:"Name",class:"form-control"%>
+    </div>
+    <div class="form-group">
+    <%= f.text_area :comments,placeholder:"Comments",class:"form-control"%>
+    </div>
+    <div class="form-group">
     <%= link_to_remove_fields "remove", f %>
+    </div><hr/>
 </div>      

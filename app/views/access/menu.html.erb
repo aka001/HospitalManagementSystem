@@ -31,7 +31,7 @@
 		<%=t['notification']%>
 		<br/>
 		Click <a href="<%=raw t['links']%>">here</a> for additional info.<br/>
-		<small><%=t['created_at']%></small>
+		<small><%=t['created_at'].to_formatted_s(:db)%></small>
 		</blockquote>
 		<hr/>
 		<%end%>

@@ -105,14 +105,13 @@ class UsersController < ApplicationController
     if app.save
       str='You have a new pending request from '
       str+= Patient.find(params[:id2]).name
-    	ActiveSupport::Notifications.instrument("appointment",user_id:Doctor.find(params[:id1]).users.first.id,links:"/users/show_appointment?end="+params[:dateit].to_datetime.to_s()+"&start="+params[:dateit].to_datetime.to_s()+"&submit=Filter",type:"request",notification:str)
-	  redirect_to(:action => 'appointment_patient_favourite')
+      ActiveSupport::Notifications.instrument("appointment",user_id:Doctor.find(params[:id1]).users.first.id,links:"/users/show_appointment?end="+params[:dateit].to_datetime.to_s(:db)+"&start="+params[:dateit].to_datetime.to_s(:db)+"&submit=Filter",type:"request",notification:str)
+    redirect_to(:action => 'appointment_patient_favourite')
     else
-   	redirect_to request_appointment(:id1 => idd1, :id2 => idd2)
+    redirect_to request_appointment(:id1 => idd1, :id2 => idd2)
    end
   end
-  def show_appointment
-    user=User.find(session[:user_id])
+  def show_appointment user=User.find(session[:user_id])
     if user.roles.first.name=='patient'
       redirect_to 'appointment'
     end
@@ -146,7 +145,7 @@ class UsersController < ApplicationController
     @app=Appointment.where(doctor_id: @doc_id)
   end
   def history_appointment_patient
-    @default=0
+   @default=0
     @patient=User.find(session[:user_id]).patients.first
     @app=Appointment.where(patient_id: @patient.id)
     @all=0
@@ -174,6 +173,35 @@ class UsersController < ApplicationController
       @default=1
     end
   end
+  def history_appointment_doctor
+    @id=params[:id]
+    @app=Appointment.find(@id)
+    @doc_id=@app.doctor_id
+    @pat_id=@app.patient_id
+    @app_search=Appointment.where(:doctor_id => @doc_id, :patient_id => @pat_id).select("id")
+    @app_search.map {|i| i.id }
+    print @app_search
+    @prescript=Prescription.where("appointment_id IN (?)",@app_search).order('created_at DESC')
+    @prescription=Prescription.new
+  end
+  def prescription_form_doctor
+    app_id=params[:id]
+    app=Appointment.find(app_id)
+    attribute=params.require(:prescription).permit(:prognosis, :remarks, medicines_attributes: [:name,:quantity,:sigcode,:_destroy],diags_attributes:[:name,:comments,:_destroy])
+    @prescription=Prescription.new(attribute)
+    @prescription.appointment_id=app_id
+#prescription = Prescription.new(:appointment_id => app_id, :diagnostictest => attribute['diagnostictest'], :drugs => attribute['drugs'], :diagnostictest_result => attribute['diagnostictest_result'], :remark => attribute['remark'])
+    if @prescription.save
+      app.status="served"
+      app.save
+      str='You were prescribed medicine by Dr.'
+      str+=User.find(session[:user_id]).doctors.name
+      ActiveSupport::Notifications.instrument("appointment",user_id:Patient.find(app.patient_id).users.first.id,links:"/users/history_appointment_patient?end="+app.dateit.to_s(:db)+"&start="+app.dateit.to_s(:db)+"&submit=Filter",type:app.status,notification:str)
+      redirect_to(:action => 'show_prescription', :id => app_id)
+    else
+      render('prescription_form_doctor')
+    end
+  end
   def action_appointment_doctor
     stat=params[:id1]
     ap_id=params[:app_id]
@@ -192,7 +220,7 @@ class UsersController < ApplicationController
       str+=findit.status
       str+="ed"
       ActiveSupport::Notifications.instrument("appointment",user_id:Patient.find(findit.patient_id).users.first.id,links:"/users/history_appointment_patient?end="+findit.dateit.to_s(:db)+"&start="+findit.dateit.to_s(:db)+"&submit=Filter",type:findit.status,notification:str)
-      flash[:notify]="Appointment with "+ Patient.find(findit.patient_id).name+" Confirmed"
+      flash[:notify]="Appointment with "+ Patient.find(findit.patient_id).name+findit.status+"ed"
       #render(:action => 'show_appointment')
       if callit=='appointment_patient_favourite'
       redirect_to(:action => 'appointment_patient_favourite')
@@ -224,25 +252,36 @@ class UsersController < ApplicationController
     print @app_search
     @prescript=Prescription.where("appointment_id IN (?)",@app_search).order('created_at DESC')
     @prescription=Prescription.new
+    names=Med.where(true).select("name")
+    names=names.map{|i| i.name}
+    names=names.join('","')
+    names="[\""+names+"\"]"
+    @name=names
+    sig=Sigcode.where(true).select("name")
+    sig=sig.map{|i| i.name}
+    sig=sig.join('","')
+    sig="[\""+sig+"\"]"
+    @sigs=sig
+    
   end
-  def prescription_form_doctor
-    app_id=params[:id]
-    app=Appointment.find(app_id)
-    attribute=params.require(:prescription).permit(:prognosis, :remarks, medicines_attributes: [:name,:quantity,:sigcode,:_destroy],diags_attributes:[:name,:comments])
-    @prescription=Prescription.new(attribute)
-    @prescription.appointment_id=app_id
-#prescription = Prescription.new(:appointment_id => app_id, :diagnostictest => attribute['diagnostictest'], :drugs => attribute['drugs'], :diagnostictest_result => attribute['diagnostictest_result'], :remark => attribute['remark'])
-  if @prescription.save
-      app.status="served"
-      app.save
-      str='You were prescribed medicine by Dr.'
-      str+=User.find(session[:user_id]).doctors.name
-      ActiveSupport::Notifications.instrument("appointment",user_id:Patient.find(app.patient_id).users.first.id,links:"/users/history_appointment_patient?end="+app.dateit.to_s(:db)+"&start="+app.dateit.to_s(:db)+"&submit=Filter",type:app.status,notification:str)
-    redirect_to(:action => 'show_appointment')
-  else
-    render('prescription_form_doctor')
-  end
-  end
+  # def prescription_form_doctor
+    # app_id=params[:id]
+    # app=Appointment.find(app_id)
+    # attribute=params.require(:prescription).permit(:prognosis, :remarks, medicines_attributes: [:name,:quantity,:sigcode,:_destroy],diags_attributes:[:name,:comments])
+    # @prescription=Prescription.new(attribute)
+    # @prescription.appointment_id=app_id
+# #prescription = Prescription.new(:appointment_id => app_id, :diagnostictest => attribute['diagnostictest'], :drugs => attribute['drugs'], :diagnostictest_result => attribute['diagnostictest_result'], :remark => attribute['remark'])
+  # if @prescription.save
+      # app.status="served"
+      # app.save
+      # str='You were prescribed medicine by Dr.'
+      # str+=User.find(session[:user_id]).doctors.name
+      # ActiveSupport::Notifications.instrument("appointment",user_id:Patient.find(app.patient_id).users.first.id,links:"/users/history_appointment_patient?end="+app.dateit.to_s(:db)+"&start="+app.dateit.to_s(:db)+"&submit=Filter",type:app.status,notification:str)
+    # redirect_to(:action => 'show_appointment')
+  # else
+    # render('prescription_form_doctor')
+  # end
+  # end
 
   def show_prescription
     appid=params[:id]
@@ -272,7 +311,7 @@ class UsersController < ApplicationController
   def favourite_action
     x=params[:id]
     doc=params[:id1]
-    pat=session[:user_id]
+    pat=User.find(session[:user_id]).patients.first.id
     print x
     if x=="1"
       x=Favourite.new(:doctor_id => doc, :patient_id => pat)
@@ -309,6 +348,8 @@ class UsersController < ApplicationController
     name=params[:name]
     spec=params[:spec]
     city=params[:city]
+    puts "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+    puts params
     if name.empty?
       name=nil
     end
@@ -345,9 +386,9 @@ class UsersController < ApplicationController
     @doctor=@user.doctors.first
   end
   def create_doctor
-    attribute=params.require(:doctor).permit(:username, :password, :name, :gender, :date_of_birth, :address, :qualification, :experience_years, :specialised_fields,:salary)
+    attribute=params.require(:doctor).permit(:username, :password, :name, :gender, :date_of_birth, :contact_number, :address, :qualification, :experience_years, :specialised_fields,:salary,:country)
     user=User.new(:username => attribute['username'], :password => User.hash_with_salt(attribute[:password], 'salt'))
-    doctor= Doctor.new(:name => attribute['name'], :gender => attribute['gender'], :date_of_birth => attribute['date_of_birth'], :address => attribute['address'],:qualification => attribute['qualification'], :experience_years => attribute['experience_years'], :specialised_fields => attribute['specialised_fields'],:salary => attribute['salary'])
+    doctor= Doctor.new(:name => attribute['name'], :gender => attribute['gender'], :date_of_birth => attribute['date_of_birth'],:country => attribute['country'], :address => attribute['address'],:qualification => attribute['qualification'], :experience_years => attribute['experience_years'], :specialised_fields => attribute['specialised_fields'],:salary => attribute['salary'], :contact_number => attribute['contact_number'])
     if user.save && doctor.save
       user.doctors << doctor
       puts user.doctors
@@ -359,14 +400,13 @@ class UsersController < ApplicationController
     end
   end
   def update_doctor
+    attribute=params.require(:doctor).permit(:username, :name, :gender, :date_of_birth, :contact_number, :address, :qualification, :experience_years, :specialised_fields,:salary, :country)
     @users=User.find(params[:id])
-    @doctors=User.doctors.first
-    if (@users.update_attributes(:username => attribute['username'])) && (@doctors.update_attribute(:name => attribute['name'], :gender => attribute['gender'], :date_of_birth => attribute['date_of_birth'], :address => attribute['address'],
-                    :qualification => attribute['qualification'], :experience_years => attribute['experience_years'], :specialised_fields => attribute['specialised_fields'],
-                    :salary => attribute['salary']))
+    @doctors=@users.doctors.first
+    if (@users.update_attributes(:username => attribute['username'])) && (@doctors.update_attributes(:name => attribute['name'], :country => attribute['country'], :gender => attribute['gender'], :date_of_birth => attribute['date_of_birth'], :address => attribute['address'],:qualification => attribute['qualification'], :experience_years => attribute['experience_years'], :specialised_fields => attribute['specialised_fields'],:salary => attribute['salary'], :contact_number => attribute['contact_number']))
       redirect_to(:action => 'list_doctor')
     else
-      render('new')
+      render('edit_doctor')
     end
   end
   def delete_doctor
@@ -375,19 +415,15 @@ class UsersController < ApplicationController
   end
   def destroy_doctor
     @users=User.find(params[:id])
-    Doctor.find(@users.doctors.first['id']).destroy
+    Doctor.find(@users.doctors.first['id']).delete
     @users.destroy
     redirect_to(:action => 'list_doctor')
   end
   def edit_doctor
     @users=User.find(params[:id])
     @doctors=@users.doctors.first
+    
   end
-  def update_doctor
-    @users=User.find(params[:id])
-    @doctors=@users.doctors
-  end
-  
   def new_assistant 
   end
   def list_assistant
@@ -420,10 +456,10 @@ class UsersController < ApplicationController
   end
   def update_assistant
     @users=User.find(params[:id])
-    @assistants=User.assistants.first
+    @assistants=@users.assistants.first
     attribute=params.require(:assistant).permit(:username, :password, :name, :gender, :date_of_birth, :permanent_address, :email, :education, :biodata, :salary)
     #attribute=params.require(:assistant).permit(:username, :password, :name, :gender, :date_of_birth, :address, :qualification, :experience_years, :specialised_fields,:salary)
-    if (@users.update_attributes(:username => attribute['username'])) && (@assistants.update_attribute(:name => attribute['name'], :gender => attribute['gender'], :date_of_birth => attribute['date_of_birth'], :permanent_address => attribute['permanent_address'],
+    if (@users.update_attributes(:username => attribute['username'])) && (@assistants.update_attributes(:name => attribute['name'], :gender => attribute['gender'], :date_of_birth => attribute['date_of_birth'], :permanent_address => attribute['permanent_address'],
                     :email => attribute['email'], :education => attribute['education'], :biodata => attribute['biodata'],
                     :salary => attribute['salary']))
       redirect_to(:action => 'list_assistant')
@@ -436,7 +472,7 @@ class UsersController < ApplicationController
   end
   def destroy_assistant
     @users=User.find(params[:id])
-    @users.assistants.destroy
+    Assistant.find(@users.assistants.first.id).delete()
     @users.destroy
     redirect_to(:action => 'list_assistant')
   end
@@ -471,9 +507,10 @@ class UsersController < ApplicationController
   end
   def update_patient
     @users=User.find(params[:id])
-    @patients=User.patients.first
+    @patients=@users.patients.first
     attribute=params.require(:patient).permit(:username, :password, :name, :gender, :age, :address, :contact_number)
-    if (@users.update_attributes(:username => attribute['username'])) && (@assistants.update_attribute(:name => attribute['name'], :gender => attribute['gender'], :age => attribute['age'], :address => attribute['address'],
+    print attribute
+    if (@users.update_attributes(:username => attribute['username'])) && (@patients.update_attributes(:name => attribute['name'], :gender => attribute['gender'], :age => attribute['age'], :address => attribute['address'],
                     :contact_number => attribute['contact_number']))
       redirect_to(:action => 'list_patient')
     else

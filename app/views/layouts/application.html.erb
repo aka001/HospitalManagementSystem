@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<%if @pdfpage.nil?%>
+
 <html lang="en">
 
   <head>
     <%=render :partial=> 'layouts/header' %>
   </head>
+  <%if @pdfpage.nil?%>
   <body >
     <a class="sr-only" href="#content">Skip to main content</a>
 

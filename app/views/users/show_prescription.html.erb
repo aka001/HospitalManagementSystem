@@ -1,37 +1,35 @@
-<%if params[:type]%>
+<img src="/assets/presban.png" media="print" style="float:right"/><%if params[:type]%>
 	<%@pdfpage=1%>
 	<%end%>
 
 <style>
 	.typo{display:inline;}
 </style>
-<h3>Green Software
+<h3>Green Software</h3>
 <br/><br/>
 <h4 class="typo"><b>Doctor Name: </b></h4>
-<%= @doctor.name %>
-<br />
-<br/>
+<%= @doctor.name %><hr />
+
 <h4 class="typo"><b>Patient Name:</h4></b> <%= @patient.name %>
-<br />
-<h4 class="typo"><b>Patient Age:</h4></b> <%= @patient.age%>
-<br /><br />
+  <b>, Age:</b> <%= @patient.age%>
+<hr />
 
 <h4 class="typo"><b>Prognosis: </b></h4> <%= @prescription.prognosis %></p>
 <h4 class="typo"><b>Medicines:</b></h4>
 <% if @medicine.empty?%>
 	<p>No medicines to be prescribed</p>
 <% else %>
-	<table class="table table-hover">
-		<thead>
-			<th>Name</th>
-			<th>Sig Code</th>
-			<th>Quantity</th>
+	<table width='100%' style="text-align:center" border=2>
+		<thead style="text-align:center">
+			<th style="text-align:center">Name</th>
+			<th style="text-align:center">Sig Code</th>
+			<th style="text-align:center">Quantity</th>
 		</thead>
 		<% @medicine.each do |med|%>
 			<tr>
-				<td><%=med.name%></td>
-				<td><%=med.sigcode%></td>
-				<td><%=med.quantity%></td>
+				<td style="text-align:center"><%=med.name%></td>
+				<td style="text-align:center"><%=med.sigcode%></td>
+				<td style="text-align:center"><%=med.quantity%></td>
 			</tr>
 		<% end %>
 	</table>
@@ -40,15 +38,15 @@
 <% if @diagnostic.empty?%>
 	<p>No diagnostics specified</p>
 <% else %>
-	<table class="table table-hover">
+	<table width='100%' style="text-align:center" border=2>
 		<thead>
-			<th>Test</th>
-			<th>Comment</th>	
+			<th style="text-align:center">Test</th>
+			<th style="text-align:center">Comment</th>	
 		</thead>
 		<% @diagnostic.each do |diag|%>
 			<tr>
-				<td><%= diag.name %></td>
-				<td><%= diag.comments%>
+				<td style="text-align:center"><%= diag.name %></td>
+				<td style="text-align:center"><%= diag.comments%>
 			</tr>
 		<% end %>
 	</table>
@@ -62,4 +60,7 @@
 </div>
 <%if params[:type].nil?%>
 <%=link_to "Generate Pdf","show_prescription.pdf?id="+params[:id]+"&type=pdf"%>
+<%else%>
+_____________________<br/>
+Signature
 <%end%>

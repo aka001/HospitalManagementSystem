@@ -2,11 +2,11 @@
 <%= link_to("<<Back to lists", {:action => 'list_doctor'}, :class => "btn btn-primary") %>
 <br>
 <div id="name">
-  <h2>Create Doctor</h2>
+  <h2>Edit Doctor</h2>
   <%= form_for(:doctor, :url => {:action => 'update_doctor', :id => @users.id}) do |f| %>
 	<%= render(:partial => 'editdoctor', :locals => {:f => f}) %>
 	<div class="form-buttons">
-  		<%= submit_tag("Create Doctor")%>
+  		<%= submit_tag("Update")%>
   	</div>
   <% end %>
 </div>

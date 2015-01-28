@@ -4,9 +4,9 @@
 <div id="name">
   <h2>Create Patient</h2>
   <%= form_for(:patient, :url => {:action => 'update_patient', :id => @users.id}) do |f| %>
-	<%= render(:partial => 'patient', :locals => {:f => f}) %>
+	<%= render(:partial => 'editpatient', :locals => {:f => f}) %>
 	<div class="form-buttons">
-  		<%= submit_tag("Create Patient")%>
+  		<%= submit_tag("Update")%>
   	</div>
   <% end %>
 </div>

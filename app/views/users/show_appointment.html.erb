@@ -63,8 +63,8 @@
 		<td><%= User.status(app['status'])%></td>
 		<% if app['status']=='pending'%>
 			<% app_id = app.id%>
-			<td><%= link_to("Confirm", {:action => 'action_appointment_doctor', :id1 => "confirm",:app_id=>app_id,:callit=>'show_appointment'} , :class => "btn btn-warning") %></td>
-			<td><%= link_to("Cancel", {:action => 'action_appointment_doctor', id1: "cancel", app_id:app_id,:callit=>'show_appointment'}, :class => "btn btn-danger") %></td>
+			<td><%= link_to("Confirm", {:action => 'action_appointment_doctor', :id1 => "confirm",:app_id=>app_id,:callit=>'show_appointment'} , :class => "btn btn-warning") %>
+			&nbsp;<%= link_to("Cancel", {:action => 'action_appointment_doctor', id1: "cancel", app_id:app_id,:callit=>'show_appointment'}, :class => "btn btn-danger") %></td>
 		<% elsif app['status']=='confirm'%>
 			<td><%= link_to("Prescription", {:action => 'prescription_doctor', :id => app['id']}, :class => "btn btn-primary") %></td>
 		<% elsif app['status']=='served'%>

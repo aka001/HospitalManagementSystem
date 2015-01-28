@@ -1,50 +1,55 @@
 <table>
 	<tr>
 		<th>Username</th>
-		<td><%= f.text_field(:username) %></td>
+		<%val = ""; 8.times{val  << (65 + rand(25)).chr}%>
+		<td><%= f.text_field(:username,class:"form-control",value:val,required:'') %></td>
 	</tr>
 	<tr>
 		<th>Password</th>
-		<td><%= f.password_field(:password) %></td>
+		<td><%= f.password_field(:password,class:"form-control",required:'') %></td>
 	</tr>
 	<tr>
 		<th>Name</th>
-		<td><%= f.text_field(:name) %></td>
+		<td><%= f.text_field(:name,class:"form-control",required:'') %></td>
 	</tr>
 	<tr>
 		<th>Gender</th>
-		<td><%= f.select(:gender,['M','F']) %></td>
+		<td><%= f.select(:gender,['M','F'],class:"form-control") %></td>
 	</tr>
 	<tr>
 		<th>Date of Birth</th>
-		<td><%= f.datetime_select(:date_of_birth) %></td>
+		<td><%= f.datetime_select(:date_of_birth,class:"form-control",start_year:1935) %></td>
 	</tr>
 	<tr>
 		<th>Address</th>
-		<td><%= f.text_area(:address) %></td>
+		<td><%= f.text_area(:address,class:"form-control") %></td>
 	</tr>
 	<tr>
 		<th>Qualification</th>
-		<td><%= f.text_field(:qualification) %></td>
+		<td><%= f.text_field(:qualification,class:"form-control") %></td>
 	</tr>
 	<tr>
 		<th>Education</th>
-		<td><%= f.text_field(:education) %></td>
+		<td><%= f.text_field(:education,class:"form-control") %></td>
 	</tr>
 	<tr>
 		<th>Specialised Fields</th>
-		<td><%= f.text_field(:specialised_fields) %></td>
+		<td><%= f.text_field(:specialised_fields,class:"form-control") %></td>
 	</tr>
 	<tr>
 		<th>Experience Years</th>
-		<td><%= f.text_field(:experience_years) %></td>
+		<td><%= f.text_field(:experience_years,class:"form-control") %></td>
 	</tr>
 	<tr>
 		<th>Salary</th>
-		<td><%= f.text_field(:salary,maxlength:9) %></td>
+		<td><%= f.text_field(:salary,maxlength:8,class:"form-control") %></td>
 	</tr>
 	<tr>
 		<th>Contact No.</th>
-		<td><%= f.text_field(:salary,maxlength:11) %></td>
+		<td><%= f.text_field(:contact_number,maxlength:11,class:"form-control") %></td>
+	</tr>
+	<tr>
+		<th>City</th>
+		<td><%= f.text_field(:country,class:"form-control") %></td>
 	</tr>
 </table>

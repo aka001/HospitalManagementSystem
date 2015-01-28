@@ -1,16 +1,18 @@
 <br>
 <%= link_to("<<BackToList", {:action => 'list_doctor'}, :class => "btn btn-primary") %>
 <br><br>
-<p>Username: <%= @user.username %></p>
-<p>Name: <%= @doctor.name %></p>
-<p>Gender: <%= @doctor.gender %></p>
-<p>Date_of_birth: <%= @doctor.date_of_birth %></p>
-<p>Addres: <%= @doctor.address %></p>
-<p>Contact Number: <%= @doctor.contact_number%>
-<p>Qualification: <%= @doctor.qualification %></p>
-<p>Education: <%= @doctor.education %></p>
-<p>Specialised Fields: <%= @doctor.specialised_fields %></p>
-<p>Experience Years: <%= @doctor.experience_years %></p>
-<p>Salary: <%= @doctor.salary %></p>
+<table>
+<tr></tr><td>Username: </td><td><%= @user.username %></td>
+<tr><td>Name:</td> <td><%= @doctor.name %></td></tr>
+<tr><td>Gender:</td> <td><%= @doctor.gender %></td></tr>
+<tr><td>Date_of_birth:</td> <td><%= @doctor.date_of_birth %></td></tr>
+<tr><td>Addres:</td> <td><%= @doctor.address %></td></tr>
+<tr><td>Contact Number:</td> <td><%= @doctor.contact_number%></td></tr>
+<tr><td>Qualification:</td> <td><%= @doctor.qualification %></td></tr>
+<tr><td>Education:</td> <td><%= @doctor.education %></td></tr>
+<tr><td>Specialised Fields:</td> <td><%= @doctor.specialised_fields %></td></tr>
+<tr><td>Experience Years:</td> <td><%= @doctor.experience_years %></td></tr>
+<tr><td>Salary:</td> <td><%= @doctor.salary %></td></tr>
+<tr><td>City:</td> <td><%= @doctor.country %></td></tr>
 
-
+</table>

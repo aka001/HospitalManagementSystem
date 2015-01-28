@@ -1,13 +1,9 @@
 <%= link_to("Add Favourite doctors", {:action => 'advanced_search_doctor'}, :class => "nav nav-pills") %>
 <% if !@fav.empty? %>
-		<table>
+		<table class="table table-hover">
 			<thead>
 				<th>Username</th>
 				<th>Name</th>
-				<th>Gender</th>
-				<th>Date_of_birth</th>
-				<th>Address</th>
-				<th>Qualification</th>
 				<th>Status</th>
 			</thead>
 			
@@ -20,16 +16,11 @@
 						<td><%= user.username%></td>
 					<% end %>
 					<td><%= doctor.name %></td>
-					<td><%= doctor.gender %></td>
-					<td><%= doctor.date_of_birth %></td>
-					<td><%= doctor.address %></td>
-					<td><%= doctor.qualification %></td>
-					<td><%= doctor.id %></td>
 					<% out = Favourite.where(:doctor_id => doctor.id, :patient_id => @patient.id) %>
 					<% if out.empty? %>
-						<td><%= link_to("Add to Favourites", {:action => 'favourite_action', :id => 1, :id1 => doctor.id, :id2 => @patient.id, :redirect => 2}, :class => "back-link") %></td>
+						<td><%= link_to("Add to Favourites", {:action => 'favourite_action', :id => 1, :id1 => doctor.id, :id2 => @patient.id, :redirect => 2}, :class => "btn btn-success") %></td>
 					<% else %>
-						<td><%= link_to("Remove from Favourites", {:action => 'favourite_action', :id => 2, :id1 => doctor.id, :id2 => @patient.id, :redirect => 2}, :class => "back-link") %></td>
+						<td><%= link_to("Remove from Favourites", {:action => 'favourite_action', :id => 2, :id1 => doctor.id, :id2 => @patient.id, :redirect => 2}, :class => "btn btn-danger") %></td>
 					<% end %>
 				</tr>
 				<% end %>

@@ -1,0 +1,32 @@
+<table>
+	<tr>
+		<th>Username</th>
+		<%v=@users.username%>
+		<td><%= f.text_field(:username,class:"form-control",value:v,required:'') %></td>
+	</tr>
+	<tr>
+		<th>Name</th>
+		<%v=@patients.name%>
+		<td><%= f.text_field(:name,class:"form-control",value:v,required:'') %></td>
+	</tr>
+	<tr>
+		<th>Gender</th>
+		<%v=@patients.gender%>
+		<td><%= f.select(:gender,['M','F'],class:"form-control",value:v,required:'') %></td>
+	</tr>
+	<tr>
+		<th>Age</th>
+		<%v=@patients.age%>
+		<td><%= f.text_field(:age,:maxlength=>3,class:"form-control",value:v,required:'') %></td>
+	</tr>
+	<tr>
+		<th>Address</th>
+		<%v=@patients.address%>
+		<td><%= f.text_area(:address,class:"form-control",value:v,required:'') %></td>
+	</tr>
+	<tr>
+		<th>Contact Number</th>
+		<%v=@patients.contact_number%>
+		<td><%= f.text_field(:contact_number,:maxlength=>11,class:"form-control",value:v,required:'') %></td>
+	</tr>
+</table>

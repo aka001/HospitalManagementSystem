@@ -1,6 +1,14 @@
-<div class="fields bs-example form-group" width="50%" >
-    <%= f.text_field :name,placeholder:"Name",class:"form-control",'data-provide'=>"typeahead",'data-source'=>'["2","3"]'%>
+<div class="form-inline fields">
+	<div class="form-group">
+    <%= f.text_field :name,placeholder:"Drug name",class:"form-control",'data-provide'=>"typeahead",'data-source'=>@name%>
+    </div>
+    <div class="form-group">
     <%= f.text_field :quantity,placeholder:"quantity (in mg)",maxlength:4,class:"form-control"%>
-    <%= f.text_field :sigcode,placeholder:"Sigcode",maxlength:5,class:"form-control"%>
-    <%= link_to_remove_fields "remove", f %>
-</div>      
+    </div>
+    <div class="form-group">
+    <%= f.text_field :sigcode,placeholder:"Sigcode",maxlength:5,class:"form-control",'data-provide'=>"typeahead",'data-source'=>@sigs%>
+    </div>
+    <%= link_to_remove_fields "remove", f %><hr/>
+</div>
+
+

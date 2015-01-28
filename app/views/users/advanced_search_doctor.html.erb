@@ -19,7 +19,7 @@
 	</div>
 	<input type="submit" value="submit">
 </form>
-<% if @doctors != nil %>
+<% if !@doctors.nil? and !@doctors.empty? %>
 		<table class="table table-striped">
 			<thead>
 				<th>Username</th>
@@ -40,10 +40,11 @@
 					<td><%= doctor.name %></td>
 					<td><%= doctor.contact_number %></td>
 					<% out = Favourite.where(:doctor_id => doctor.id, :patient_id => @patient.id) %>
+					
 					<% if out.empty? %>
-						<td><%= link_to("Add to Favourites", {:action => 'favourite_action', :id => 1, :id1 => doctor.id, :redirect => 1}, :class => "back-link") %></td>
+						<td><%= link_to("Add to Favourites", {:action => 'favourite_action', :id => 1, :id1 => doctor.id, :redirect => 1}, :class => "btn btn-success") %></td>
 					<% else %>
-						<td><%= link_to("Remove from Favourites", {:action => 'favourite_action', :id => 2, :id1 => doctor.id, :redirect => 1}, :class => "back-link") %></td>
+						<td><%= link_to("Remove from Favourites", {:action => 'favourite_action', :id => 2, :id1 => doctor.id, :redirect => 1}, :class => "btn btn-danger") %></td>
 					<% end %>
 					<td><%= link_to("Show", {:action => 'show_doctor', :id => user.id}, :class => "btn btn-success") %></td>
 				</tr>
