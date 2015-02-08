@@ -6,7 +6,7 @@ Things you may want to cover:
 
 * Configuration: The file config/database.yml needs to be updated. User and password for the database for the database needs to be updated.
 
-About the Application:
+About the Application:  
 1. The actors in the application are: patient, doctor, assistant.  
 2. Patient can ask for appointment from doctor in a specific interval.  
 3. Doctors can accept or reject the appointment and the patient will be notified of the same.  
