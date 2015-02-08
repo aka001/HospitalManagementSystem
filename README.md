@@ -1,28 +1,14 @@
-== README
-
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
 Things you may want to cover:
 
-* Ruby version
+* Ruby version: 2.0
 
-* System dependencies
+* Rails version: 4.0
 
-* Configuration
+* Configuration: The file config/database.yml needs to be updated. User and password for the database for the database needs to be updated.
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+About the Application:
+1. The actors in the application are: patient, doctor, assistant.  
+2. Patient can ask for appointment from doctor in a specific interval.  
+3. Doctors can accept or reject the appointment and the patient will be notified of the same.  
+4. Doctor can generate a prescription which will be saved as pdf in both patients and doctors record.
+5. Doctor can filter appointments based on data and time.(Some custom filters were also added).
